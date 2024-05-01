@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "591188550806",
+    "project_id": "goalify-b824d",
+    "storage_bucket": "goalify-b824d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:591188550806:android:a43774f8f7c865fe6aceb7",
+        "android_client_info": {
+          "package_name": "com.example.fitnessgoal"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDlnlQeLCghW1VF0jSBd1sKTNstikoFvX8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
