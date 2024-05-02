@@ -3,21 +3,20 @@ import 'package:fitnessgoal/components/my_button.dart';
 import 'package:fitnessgoal/components/my_textfield.dart';
 import 'package:fitnessgoal/components/square_tile.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
-  
-  
- 
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
+
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
-   final usernameController = TextEditingController();
+class _RegisterPageState extends State<RegisterPage> {
+  final usernameController = TextEditingController();
   final passwordController = TextEditingController();
+  final confirmpassController = TextEditingController();
 
   void signUser() {}
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,6 +26,7 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              
               const SizedBox(height: 50),
 
               // logo
@@ -39,7 +39,7 @@ class _LoginPageState extends State<LoginPage> {
 
               // welcome back, you've been missed!
               Text(
-                'Welcome back you\'ve been missed!',
+                'Create an account',
                 style: TextStyle(
                   color: Colors.grey[700],
                   fontSize: 16,
@@ -54,13 +54,22 @@ class _LoginPageState extends State<LoginPage> {
                 hintText: 'Username',
                 obscureText: false,
               ),
-
+ 
               const SizedBox(height: 10),
 
               // password textfield
               MyTextField(
                 controller: passwordController,
                 hintText: 'Password',
+                obscureText: true,
+              ),
+
+              const SizedBox(height: 10),
+
+              // Confirm password textfield
+              MyTextField(
+                controller: confirmpassController,
+                hintText: 'Confirm Password',
                 obscureText: true,
               ),
 
@@ -119,7 +128,7 @@ class _LoginPageState extends State<LoginPage> {
 
               const SizedBox(height: 50),
 
-              // google + apple sign in buttons
+         /*     // google + apple sign in buttons
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: const [
@@ -131,7 +140,7 @@ class _LoginPageState extends State<LoginPage> {
                   // apple button
                   SquareTile(imagePath: 'lib/images/apple.png')
                 ],
-              ),
+              ),*/
 
               const SizedBox(height: 50),
 
@@ -140,12 +149,12 @@ class _LoginPageState extends State<LoginPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Not a member?',
+                    'Having An Account',
                     style: TextStyle(color: Colors.grey[700]),
                   ),
                   const SizedBox(width: 4),
                   const Text(
-                    'Register now',
+                    'Login',
                     style: TextStyle(
                       color: Colors.blue,
                       fontWeight: FontWeight.bold,
@@ -159,5 +168,4 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
-
 }
