@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fitnessgoal/components/my_button.dart';
 import 'package:fitnessgoal/components/my_textfield.dart';
-import 'package:fitnessgoal/components/square_tile.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -31,7 +30,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
               // logo
               const Icon(
-                Icons.lock,
+                Icons.person_pin,
                 size: 100,
               ),
 
