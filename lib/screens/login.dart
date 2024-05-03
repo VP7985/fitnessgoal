@@ -4,20 +4,21 @@ import 'package:fitnessgoal/components/my_textfield.dart';
 import 'package:fitnessgoal/components/square_tile.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
-  
-  
- 
+    final Function()? onTap;
+  const LoginPage({super.key,required this.onTap});
+
+
+
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
-   final usernameController = TextEditingController();
+  final usernameController = TextEditingController();
   final passwordController = TextEditingController();
 
   void signUser() {}
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -85,6 +86,7 @@ class _LoginPageState extends State<LoginPage> {
               // sign in button
               MyButton(
                 onTap: signUser,
+                text: 'Login',
               ),
 
               const SizedBox(height: 50),
@@ -136,28 +138,29 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(height: 50),
 
               // not a member? register now
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Not a member?',
-                    style: TextStyle(color: Colors.grey[700]),
-                  ),
-                  const SizedBox(width: 4),
-                  const Text(
-                    'Register now',
-                    style: TextStyle(
-                      color: Colors.blue,
-                      fontWeight: FontWeight.bold,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Create an account',
+                      style: TextStyle(color: Colors.grey[700]),
                     ),
-                  ),
-                ],
-              )
+                    GestureDetector(
+                      onTap:widget.onTap,
+                      child: const Text(
+                        ' Register Now',
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
             ],
           ),
         ),
       ),
     );
   }
-
 }
