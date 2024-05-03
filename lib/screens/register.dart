@@ -22,6 +22,7 @@ class _RegisterPageState extends State<RegisterPage> {
       backgroundColor: Colors.grey[300],
       body: SafeArea(
         child: SingleChildScrollView(
+          // Wrap the Column with SingleChildScrollView
           child: Padding(
             padding: const EdgeInsets.all(20.0),
             child: Column(
@@ -29,7 +30,7 @@ class _RegisterPageState extends State<RegisterPage> {
               children: [
                 const SizedBox(height: 50),
                 const Icon(
-                  Icons.person_pin,
+                  Icons.person,
                   size: 100,
                 ),
                 const SizedBox(height: 50),
@@ -60,7 +61,9 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
                 const SizedBox(height: 25),
                 MyButton(
-                  onTap: () {},
+                  onTap: () {
+                    // Handle sign up button tap
+                  },
                   text: 'Sign Up',
                 ),
                 const SizedBox(height: 50),
@@ -97,7 +100,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       style: TextStyle(color: Colors.grey[700]),
                     ),
                     GestureDetector(
-                      onTap:widget.onTap,
+                      onTap: widget.onTap,
                       child: const Text(
                         ' Login Now',
                         style: TextStyle(
