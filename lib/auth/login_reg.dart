@@ -3,7 +3,7 @@ import 'package:fitnessgoal/screens/register.dart';
 import 'package:flutter/material.dart';
 
 class LoginOrReg extends StatefulWidget {
-  const LoginOrReg({super.key});
+  const LoginOrReg({Key? key});
 
   @override
   State<LoginOrReg> createState() => _LoginOrRegState();
