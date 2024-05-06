@@ -1,5 +1,4 @@
 import 'package:fitnessgoal/auth/auth.dart';
-import 'package:fitnessgoal/auth/login_reg.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:fitnessgoal/firebase_options.dart';

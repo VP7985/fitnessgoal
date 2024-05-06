@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitnessgoal/components/my_button.dart';
 import 'package:fitnessgoal/components/my_textfield.dart';
+import 'package:fitnessgoal/screens/login.dart';
 
 class RegisterPage extends StatefulWidget {
   final Function()? onTap;
@@ -8,13 +10,57 @@ class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key, required this.onTap});
 
   @override
-  State<RegisterPage> createState() => _RegisterPageState();
+  _RegisterPageState createState() {
+    return _RegisterPageState();
+  }
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  final usernameController = TextEditingController();
-  final passwordController = TextEditingController();
-  final confirmpassController = TextEditingController();
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmpassController = TextEditingController();
+
+  Future<void> signReg() async {
+    try {
+      if (passwordController.text == confirmpassController.text) {
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: usernameController.text,
+          password: passwordController.text,
+        );
+
+        // Registration successful, navigate to LoginPage
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => LoginPage(onTap: signReg)),
+        );
+      } else {
+        _showErrorMessage("Passwords don't match!");
+      }
+    } catch (e) {
+      _showErrorMessage("Registration failed. Please try again.");
+      print("Error: $e");
+    }
+  }
+
+  void _showErrorMessage(String message) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Error'),
+          content: Text(message),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // Close the dialog
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +68,6 @@ class _RegisterPageState extends State<RegisterPage> {
       backgroundColor: Colors.grey[300],
       body: SafeArea(
         child: SingleChildScrollView(
-          // Wrap the Column with SingleChildScrollView
           child: Padding(
             padding: const EdgeInsets.all(20.0),
             child: Column(
@@ -61,9 +106,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
                 const SizedBox(height: 25),
                 MyButton(
-                  onTap: () {
-                    // Handle sign up button tap
-                  },
+                  onTap: signReg,
                   text: 'Sign Up',
                 ),
                 const SizedBox(height: 50),
@@ -96,7 +139,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'Having an account?',
+                      'Already have an account?',
                       style: TextStyle(color: Colors.grey[700]),
                     ),
                     GestureDetector(

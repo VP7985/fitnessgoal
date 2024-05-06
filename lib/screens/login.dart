@@ -1,10 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:fitnessgoal/components/my_button.dart';
 import 'package:fitnessgoal/components/my_textfield.dart';
 import 'package:fitnessgoal/components/square_tile.dart';
-import 'package:pigeon/pigeon.dart';
 
 class LoginPage extends StatefulWidget {
   final Function()? onTap;
@@ -18,11 +16,21 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-
   void signUser() async {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
+
     // Implement your sign-in logic here
     await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: emailController.text, password: passwordController.text);
+
+    Navigator.pop(context);
   }
 
   @override
