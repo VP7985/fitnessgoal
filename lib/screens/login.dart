@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fitnessgoal/components/my_button.dart';
 import 'package:fitnessgoal/components/my_textfield.dart';
@@ -6,18 +7,30 @@ import 'package:fitnessgoal/components/square_tile.dart';
 class LoginPage extends StatefulWidget {
   final Function()? onTap;
 
-  const LoginPage({Key? key, required this.onTap}) : super(key: key);
+  const LoginPage({super.key, required this.onTap});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final usernameController = TextEditingController();
+  final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  void signUser() async {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
 
-  void signUser() {
     // Implement your sign-in logic here
+    await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: emailController.text, password: passwordController.text);
+
+    Navigator.pop(context);
   }
 
   @override
@@ -38,7 +51,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 const SizedBox(height: 50),
                 Text(
-                  'Welcome back you\'ve been missed!',
+                  'Welcome back !',
                   style: TextStyle(
                     color: Colors.grey[700],
                     fontSize: 16,
@@ -46,7 +59,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 const SizedBox(height: 25),
                 MyTextField(
-                  controller: usernameController,
+                  controller: emailController,
                   hintText: 'Username',
                   obscureText: false,
                 ),
