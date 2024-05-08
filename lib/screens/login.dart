@@ -1,14 +1,15 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitnessgoal/components/my_button.dart';
 import 'package:fitnessgoal/components/my_textfield.dart';
 import 'package:fitnessgoal/components/square_tile.dart';
+// Import FacebookAuth for signInWithFacebook
 import 'package:fitnessgoal/auth/facebookauth.dart';
 
 class LoginPage extends StatefulWidget {
   final Function()? onTap;
 
-  const LoginPage({super.key, required this.onTap});
+  const LoginPage({Key? key, required this.onTap}) : super(key: key);
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -17,21 +18,54 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-  void signUser() async {
+
+  Future<void> signUser() async {
+    try {
+      if (emailController.text.isNotEmpty && passwordController.text.isNotEmpty) {
+        await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: emailController.text,
+          password: passwordController.text,
+        );
+
+        // Sign-in successful, handle navigation or further actions here
+      } else {
+        _showErrorMessage("Please enter valid email and password.");
+      }
+    } catch (e) {
+      _showErrorMessage("Sign-in failed. Please try again.");
+      print("Error: $e");
+    }
+  }
+
+  void signInWithFacebook() {
+    // Implement your Facebook authentication logic here
+    // Example:
+    // FacebookAuth.signIn().then((result) {
+    //   // Handle the result of Facebook sign-in
+    // }).catchError((error) {
+    //   // Handle errors during Facebook sign-in
+    //   print("Facebook sign-in error: $error");
+    // });
+  }
+
+  void _showErrorMessage(String message) {
     showDialog(
       context: context,
       builder: (context) {
-        return const Center(
-          child: CircularProgressIndicator(),
+        return AlertDialog(
+          title: Text('Error'),
+          content: Text(message),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // Close the dialog
+              },
+              child: Text('OK'),
+            ),
+          ],
         );
       },
     );
-
-    // Implement your sign-in logic here
-    await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: emailController.text, password: passwordController.text);
-
-    Navigator.pop(context);
   }
 
   @override
@@ -114,16 +148,13 @@ class _LoginPageState extends State<LoginPage> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 30),
-                Row(
+                const SizedBox(height: 50),
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     SquareTile(imagePath: 'lib/images/google.png'),
-                    const SizedBox(width: 20),
-                    ElevatedButton(
-                      onPressed: signInWithFacebook,
-                      child: const Text("Login With Facebook"),
-                    ),
+                    SizedBox(width: 25),
+                    SquareTile(imagePath: 'lib/images/apple.png')
                   ],
                 ),
                 const SizedBox(height: 50),
@@ -143,6 +174,18 @@ class _LoginPageState extends State<LoginPage> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 30),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SquareTile(imagePath: 'lib/images/google.png'),
+                    const SizedBox(width: 20),
+                    ElevatedButton(
+                      onPressed: signInWithFacebook,
+                      child: const Text("Login With Facebook"),
                     ),
                   ],
                 ),
