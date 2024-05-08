@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fitnessgoal/components/my_button.dart';
 import 'package:fitnessgoal/components/my_textfield.dart';
 import 'package:fitnessgoal/components/square_tile.dart';
+import 'package:fitnessgoal/auth/facebookauth.dart';
 
 class LoginPage extends StatefulWidget {
   final Function()? onTap;
@@ -39,7 +40,6 @@ class _LoginPageState extends State<LoginPage> {
       backgroundColor: Colors.grey[300],
       body: SafeArea(
         child: SingleChildScrollView(
-          // Wrap the Column with SingleChildScrollView
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -114,13 +114,16 @@ class _LoginPageState extends State<LoginPage> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 50),
-                const Row(
+                const SizedBox(height: 30),
+                Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     SquareTile(imagePath: 'lib/images/google.png'),
-                    SizedBox(width: 25),
-                    SquareTile(imagePath: 'lib/images/apple.png')
+                    const SizedBox(width: 20),
+                    ElevatedButton(
+                      onPressed: signInWithFacebook,
+                      child: const Text("Login With Facebook"),
+                    ),
                   ],
                 ),
                 const SizedBox(height: 50),
