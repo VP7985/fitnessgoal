@@ -17,10 +17,11 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
- 
-Future<void> signUser() async {
+
+  Future<void> signUser() async {
     try {
-      if (emailController.text.isNotEmpty && passwordController.text.isNotEmpty) {
+      if (emailController.text.isNotEmpty &&
+          passwordController.text.isNotEmpty) {
         await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: emailController.text,
           password: passwordController.text,
@@ -140,7 +141,12 @@ Future<void> signUser() async {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SquareTile(imagePath: 'lib/images/google.png'),
+                    ElevatedButton(
+                      onPressed: () {
+                        signInwithGoogle();
+                      },
+                      child: Text('Login With Google'),
+                    ),
                     const SizedBox(width: 20),
                     ElevatedButton(
                       onPressed: signInWithFacebook,
@@ -174,5 +180,16 @@ Future<void> signUser() async {
         ),
       ),
     );
+  }
+
+  signInwithGoogle() {
+    // Trigger the authentication flow
+
+    //   // Update the UI
+    //   //...
+    // }).catchError((error) {
+    //   // Handle Errors here.
+    //   //...
+    // });
   }
 }
