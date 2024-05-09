@@ -7,12 +7,10 @@ import 'package:fitnessgoal/screens/login.dart';
 class RegisterPage extends StatefulWidget {
   final Function()? onTap;
 
-  const RegisterPage({super.key, required this.onTap});
+  const RegisterPage({Key? key, required this.onTap}) : super(key: key);
 
   @override
-  _RegisterPageState createState() {
-    return _RegisterPageState();
-  }
+  _RegisterPageState createState() => _RegisterPageState();
 }
 
 class _RegisterPageState extends State<RegisterPage> {
@@ -20,7 +18,13 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmpassController = TextEditingController();
 
-  Future<void> signReg() async {
+  bool _isLoading = false; // to track if registration is in progress
+
+  Future<void> _signUp() async {
+    setState(() {
+      _isLoading = true; // show loading indicator
+    });
+
     try {
       if (passwordController.text == confirmpassController.text) {
         await FirebaseAuth.instance.createUserWithEmailAndPassword(
@@ -31,7 +35,7 @@ class _RegisterPageState extends State<RegisterPage> {
         // Registration successful, navigate to LoginPage
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => LoginPage(onTap: signReg)),
+          MaterialPageRoute(builder: (context) => LoginPage(onTap: widget.onTap)),
         );
       } else {
         _showErrorMessage("Passwords don't match!");
@@ -39,6 +43,10 @@ class _RegisterPageState extends State<RegisterPage> {
     } catch (e) {
       _showErrorMessage("Registration failed. Please try again.");
       print("Error: $e");
+    } finally {
+      setState(() {
+        _isLoading = false; // hide loading indicator
+      });
     }
   }
 
@@ -47,14 +55,14 @@ class _RegisterPageState extends State<RegisterPage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Error'),
+          title: const Text('Error'),
           content: Text(message),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.pop(context); // Close the dialog
               },
-              child: Text('OK'),
+              child: const Text('OK'),
             ),
           ],
         );
@@ -105,10 +113,12 @@ class _RegisterPageState extends State<RegisterPage> {
                   obscureText: true,
                 ),
                 const SizedBox(height: 25),
-                MyButton(
-                  onTap: signReg,
-                  text: 'Sign Up',
-                ),
+                _isLoading
+                    ? const CircularProgressIndicator() // Show circular progress if loading
+                    : MyButton(
+                        onTap: _signUp,
+                        text: 'Sign Up',
+                      ),
                 const SizedBox(height: 50),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
