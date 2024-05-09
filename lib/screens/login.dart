@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitnessgoal/components/my_button.dart';
 import 'package:fitnessgoal/components/my_textfield.dart';
-import 'package:fitnessgoal/components/square_tile.dart';
 import 'package:fitnessgoal/auth/facebookauth.dart';
 
 class LoginPage extends StatefulWidget {
@@ -11,24 +10,19 @@ class LoginPage extends StatefulWidget {
   const LoginPage({Key? key, required this.onTap}) : super(key: key);
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  _LoginPageState createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-/// day_9_may
-  bool isLoading = false; // Added to track loading state
+  bool isLoading = false;
 
-  Future<void> signUser() async {
+  Future<void> signInUser() async {
     setState(() {
-      isLoading = true; // Set loading state to true when sign-in starts
+      isLoading = true;
     });
 
-//
-
-  Future<void> signUser() async {
-//
     try {
       if (emailController.text.isNotEmpty &&
           passwordController.text.isNotEmpty) {
@@ -36,9 +30,7 @@ class _LoginPageState extends State<LoginPage> {
           email: emailController.text,
           password: passwordController.text,
         );
-
         // Sign-in successful, handle navigation or further actions here
-
       } else {
         _showErrorMessage("Please enter valid email and password.");
       }
@@ -48,7 +40,7 @@ class _LoginPageState extends State<LoginPage> {
     }
 
     setState(() {
-      isLoading = false; // Set loading state to false when sign-in completes
+      isLoading = false;
     });
   }
 
@@ -62,7 +54,7 @@ class _LoginPageState extends State<LoginPage> {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.pop(context); // Close the dialog
+                Navigator.pop(context);
               },
               child: Text('OK'),
             ),
@@ -77,7 +69,6 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       backgroundColor: Colors.grey[300],
       body: SafeArea(
-//
         child: Stack(
           children: [
             SingleChildScrollView(
@@ -85,32 +76,32 @@ class _LoginPageState extends State<LoginPage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const SizedBox(height: 50),
-                    const Icon(
+                    SizedBox(height: 50),
+                    Icon(
                       Icons.person,
                       size: 100,
                     ),
-                    const SizedBox(height: 50),
+                    SizedBox(height: 50),
                     Text(
-                      'Welcome back !',
+                      'Welcome back!',
                       style: TextStyle(
                         color: Colors.grey[700],
                         fontSize: 16,
                       ),
                     ),
-                    const SizedBox(height: 25),
+                    SizedBox(height: 25),
                     MyTextField(
                       controller: emailController,
                       hintText: 'Username',
                       obscureText: false,
                     ),
-                    const SizedBox(height: 10),
+                    SizedBox(height: 10),
                     MyTextField(
                       controller: passwordController,
                       hintText: 'Password',
                       obscureText: true,
                     ),
-                    const SizedBox(height: 10),
+                    SizedBox(height: 10),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 25.0),
                       child: Row(
@@ -123,12 +114,12 @@ class _LoginPageState extends State<LoginPage> {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 25),
+                    SizedBox(height: 25),
                     MyButton(
-                      onTap: signUser,
+                      onTap: signInUser,
                       text: "Sign In",
                     ),
-                    const SizedBox(height: 50),
+                    SizedBox(height: 50),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 25.0),
                       child: Row(
@@ -155,7 +146,24 @@ class _LoginPageState extends State<LoginPage> {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 50),
+                    SizedBox(height: 30),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ElevatedButton(
+                          onPressed: () {
+                            // Implement Google Sign-In logic here
+                          },
+                          child: Text('Login With Google'),
+                        ),
+                        SizedBox(width: 20),
+                        ElevatedButton(
+                          onPressed: signInWithFacebook,
+                          child: Text("Login With Facebook"),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 50),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -165,7 +173,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         GestureDetector(
                           onTap: widget.onTap,
-                          child: const Text(
+                          child: Text(
                             ' Register Now',
                             style: TextStyle(
                               color: Colors.blue,
@@ -179,130 +187,14 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
             ),
-            // Loading indicator
             if (isLoading)
               Container(
                 color: Colors.black.withOpacity(0.3),
-                child: const Center(
+                child: Center(
                   child: CircularProgressIndicator(),
                 ),
               ),
           ],
-///
-          child: SingleChildScrollView(
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const SizedBox(height: 50),
-                const Icon(
-                  Icons.person,
-                  size: 100,
-                ),
-                const SizedBox(height: 50),
-                Text(
-                  'Welcome back !',
-                  style: TextStyle(
-                    color: Colors.grey[700],
-                    fontSize: 16,
-                  ),
-                ),
-                const SizedBox(height: 25),
-                MyTextField(
-                  controller: emailController,
-                  hintText: 'Username',
-                  obscureText: false,
-                ),
-                const SizedBox(height: 10),
-                MyTextField(
-                  controller: passwordController,
-                  hintText: 'Password',
-                  obscureText: true,
-                ),
-                const SizedBox(height: 10),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text(
-                        'Forgot Password?',
-                        style: TextStyle(color: Colors.grey[600]),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 25),
-                MyButton(
-                  onTap: signUser,
-                  text: "Sign In",
-                ),
-                const SizedBox(height: 50),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Divider(
-                          thickness: 0.5,
-                          color: Colors.grey[400],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                        child: Text(
-                          'Or continue with',
-                          style: TextStyle(color: Colors.grey[700]),
-                        ),
-                      ),
-                      Expanded(
-                        child: Divider(
-                          thickness: 0.5,
-                          color: Colors.grey[400],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 30),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ElevatedButton(
-                      onPressed: () {},
-                      child: Text('Login With Google'),
-                    ),
-                    const SizedBox(width: 20),
-                    ElevatedButton(
-                      onPressed: signInWithFacebook,
-                      child: const Text("Login With Facebook"),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 50),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Create an account',
-                      style: TextStyle(color: Colors.grey[700]),
-                    ),
-                    GestureDetector(
-                      onTap: widget.onTap,
-                      child: const Text(
-                        ' Register Now',
-                        style: TextStyle(
-                          color: Colors.blue,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-//
         ),
       ),
     );
