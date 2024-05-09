@@ -63,8 +63,8 @@ android {
     }
 }
 
-flutter {
-    source '../..'
+dependencies {
+
 }
 
 dependencies {

@@ -17,21 +17,43 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-  void signUser() async {
+ 
+Future<void> signUser() async {
+    try {
+      if (emailController.text.isNotEmpty && passwordController.text.isNotEmpty) {
+        await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: emailController.text,
+          password: passwordController.text,
+        );
+
+        // Sign-in successful, handle navigation or further actions here
+      } else {
+        _showErrorMessage("Please enter valid email and password.");
+      }
+    } catch (e) {
+      _showErrorMessage("Sign-in failed. Please try again.");
+      print("Error: $e");
+    }
+  }
+
+  void _showErrorMessage(String message) {
     showDialog(
       context: context,
       builder: (context) {
-        return const Center(
-          child: CircularProgressIndicator(),
+        return AlertDialog(
+          title: Text('Error'),
+          content: Text(message),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // Close the dialog
+              },
+              child: Text('OK'),
+            ),
+          ],
         );
       },
     );
-
-    // Implement your sign-in logic here
-    await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: emailController.text, password: passwordController.text);
-
-    Navigator.pop(context);
   }
 
   @override
