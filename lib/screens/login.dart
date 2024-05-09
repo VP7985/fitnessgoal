@@ -1,15 +1,14 @@
-import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:fitnessgoal/components/my_button.dart';
 import 'package:fitnessgoal/components/my_textfield.dart';
 import 'package:fitnessgoal/components/square_tile.dart';
-// Import FacebookAuth for signInWithFacebook
 import 'package:fitnessgoal/auth/facebookauth.dart';
 
 class LoginPage extends StatefulWidget {
   final Function()? onTap;
 
-  const LoginPage({Key? key, required this.onTap}) : super(key: key);
+  const LoginPage({super.key, required this.onTap});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -18,8 +17,6 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-
-  Future<void> signUser() async {
 
   Future<void> signUser() async {
     try {
@@ -38,17 +35,6 @@ class _LoginPageState extends State<LoginPage> {
       _showErrorMessage("Sign-in failed. Please try again.");
       print("Error: $e");
     }
-  }
-
-  void signInWithFacebook() {
-    // Implement your Facebook authentication logic here
-    // Example:
-    // FacebookAuth.signIn().then((result) {
-    //   // Handle the result of Facebook sign-in
-    // }).catchError((error) {
-    //   // Handle errors during Facebook sign-in
-    //   print("Facebook sign-in error: $error");
-    // });
   }
 
   void _showErrorMessage(String message) {
@@ -156,9 +142,7 @@ class _LoginPageState extends State<LoginPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     ElevatedButton(
-                      onPressed: () {
-                        signInwithGoogle();
-                      },
+                      onPressed: () {},
                       child: Text('Login With Google'),
                     ),
                     const SizedBox(width: 20),
@@ -194,16 +178,5 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
-  }
-
-  signInwithGoogle() {
-    // Trigger the authentication flow
-
-    //   // Update the UI
-    //   //...
-    // }).catchError((error) {
-    //   // Handle Errors here.
-    //   //...
-    // });
   }
 }
