@@ -63,12 +63,8 @@ android {
     }
 }
 
-dependencies {
-
+flutter {
+    source '../..'
 }
 
-dependencies {
-
-     implementation 'com.facebook.android:facebook-login:latest.release'
-
-}
+dependencies {}

@@ -41,7 +41,7 @@ dependencies:
   firebase_app_check: ^0.2.2+4
   flutter_native_splash: ^2.4.0
   flutter_launcher_icons: ^0.13.1
-  flutter_facebook_auth: ^6.2.0
+ 
   sign_in_button: ^3.2.0
   salomon_bottom_bar: ^3.3.2
 

@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitnessgoal/components/my_button.dart';
 import 'package:fitnessgoal/components/my_textfield.dart';
-import 'package:fitnessgoal/auth/facebookauth.dart';
+
+import 'package:sign_in_button/sign_in_button.dart';
 
 class LoginPage extends StatefulWidget {
   final Function()? onTap;
@@ -131,7 +132,8 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 10.0),
                             child: Text(
                               'Or continue with',
                               style: TextStyle(color: Colors.grey[700]),
@@ -150,15 +152,13 @@ class _LoginPageState extends State<LoginPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        ElevatedButton(
-                          onPressed: () {
-                            // Implement Google Sign-In logic here
-                          },
-                          child: Text('Login With Google'),
+                        SignInButton(
+                          Buttons.google,
+                          onPressed: () {},
                         ),
                         SizedBox(width: 20),
                         ElevatedButton(
-                          onPressed: signInWithFacebook,
+                          onPressed: (){},
                           child: Text("Login With Facebook"),
                         ),
                       ],
