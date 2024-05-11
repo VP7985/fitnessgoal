@@ -154,7 +154,6 @@ class _LoginPageState extends State<LoginPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-
                         ElevatedButton(
                           onPressed: () {
                             // Implement Google Sign-In logic here
@@ -171,7 +170,9 @@ class _LoginPageState extends State<LoginPage> {
                           onPressed: (){},
                         ),
                       ],
-                    ),
+                      ),
+                    )
+              );
                     const SizedBox(height: 50),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
