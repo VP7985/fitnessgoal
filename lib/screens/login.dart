@@ -4,13 +4,10 @@ import 'package:fitnessgoal/components/my_button.dart';
 import 'package:fitnessgoal/components/my_textfield.dart';
 
 
-import 'package:sign_in_button/sign_in_button.dart';
-
-
 class LoginPage extends StatefulWidget {
   final Function()? onTap;
 
-  const LoginPage({super.key, required this.onTap});
+  const LoginPage({Key? key, required this.onTap}) : super(key: key);
 
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -52,14 +49,14 @@ class _LoginPageState extends State<LoginPage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Error'),
+          title: Text('Error'),
           content: Text(message),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: const Text('OK'),
+              child: Text('OK'),
             ),
           ],
         );
@@ -79,12 +76,12 @@ class _LoginPageState extends State<LoginPage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const SizedBox(height: 50),
-                    const Icon(
+                    SizedBox(height: 50),
+                    Icon(
                       Icons.person,
                       size: 100,
                     ),
-                    const SizedBox(height: 50),
+                    SizedBox(height: 50),
                     Text(
                       'Welcome back!',
                       style: TextStyle(
@@ -92,19 +89,19 @@ class _LoginPageState extends State<LoginPage> {
                         fontSize: 16,
                       ),
                     ),
-                    const SizedBox(height: 25),
+                    SizedBox(height: 25),
                     MyTextField(
                       controller: emailController,
                       hintText: 'Username',
                       obscureText: false,
                     ),
-                    const SizedBox(height: 10),
+                    SizedBox(height: 10),
                     MyTextField(
                       controller: passwordController,
                       hintText: 'Password',
                       obscureText: true,
                     ),
-                    const SizedBox(height: 10),
+                    SizedBox(height: 10),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 25.0),
                       child: Row(
@@ -117,12 +114,12 @@ class _LoginPageState extends State<LoginPage> {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 25),
+                    SizedBox(height: 25),
                     MyButton(
                       onTap: signInUser,
                       text: "Sign In",
                     ),
-                    const SizedBox(height: 50),
+                    SizedBox(height: 50),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 25.0),
                       child: Row(
@@ -134,8 +131,7 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                           Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 10.0),
+                            padding: const EdgeInsets.symmetric(horizontal: 10.0),
                             child: Text(
                               'Or continue with',
                               style: TextStyle(color: Colors.grey[700]),
@@ -150,7 +146,7 @@ class _LoginPageState extends State<LoginPage> {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 30),
+                    SizedBox(height: 30),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -158,22 +154,16 @@ class _LoginPageState extends State<LoginPage> {
                           onPressed: () {
                             // Implement Google Sign-In logic here
                           },
-                          child: const Text('Login With Google'),
-
-                        SignInButton(
-                          Buttons.google,
-                          onPressed: () {},
-
+                          child: Text('Login With Google'),
                         ),
-                        const SizedBox(width: 20),
+                        SizedBox(width: 20),
                         ElevatedButton(
                           onPressed: (){},
+                          child: Text("Login With Facebook"),
                         ),
                       ],
-                      ),
-                    )
-              );
-                    const SizedBox(height: 50),
+                    ),
+                    SizedBox(height: 50),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -183,7 +173,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         GestureDetector(
                           onTap: widget.onTap,
-                          child: const Text(
+                          child: Text(
                             ' Register Now',
                             style: TextStyle(
                               color: Colors.blue,
@@ -200,7 +190,7 @@ class _LoginPageState extends State<LoginPage> {
             if (isLoading)
               Container(
                 color: Colors.black.withOpacity(0.3),
-                child: const Center(
+                child: Center(
                   child: CircularProgressIndicator(),
                 ),
               ),
