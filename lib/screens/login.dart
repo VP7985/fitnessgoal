@@ -160,11 +160,8 @@ class _LoginPageState extends State<LoginPage> {
                           Buttons.google,
                           onPressed: () {},
                         ),
-                        SizedBox(width: 20),
-                        ElevatedButton(
-                          onPressed: () {},
-                          child: null,
-                        ),
+                       
+                        
                       ],
                     ),
                     SizedBox(height: 50),
