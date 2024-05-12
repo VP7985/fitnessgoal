@@ -3,9 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitnessgoal/components/my_button.dart';
 import 'package:fitnessgoal/components/my_textfield.dart';
 
-
 import 'package:sign_in_button/sign_in_button.dart';
-
 
 class LoginPage extends StatefulWidget {
   final Function()? onTap;
@@ -154,21 +152,14 @@ class _LoginPageState extends State<LoginPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-
-                        ElevatedButton(
-                          onPressed: () {
-                            // Implement Google Sign-In logic here
-                          },
-                          child: const Text('Login With Google'),
-
                         SignInButton(
                           Buttons.google,
                           onPressed: () {},
-
                         ),
-                        const SizedBox(width: 20),
+                        SizedBox(width: 20),
                         ElevatedButton(
-                          onPressed: (){},
+                          onPressed: () {},
+                          child: null,
                         ),
                       ],
                     ),
