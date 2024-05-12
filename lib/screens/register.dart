@@ -99,13 +99,14 @@ class _RegisterPageState extends State<RegisterPage> {
                   controller: usernameController,
                   hintText: 'Username',
                   obscureText: false,
-                  
+                  prefixIcon: Icons.person,
                 ),
                 const SizedBox(height: 10),
                 MyTextField(
                   controller: passwordController,
                   hintText: 'Password',
                   obscureText: true,
+                  prefixIcon: Icons.lock,
                   
                 ),
                 const SizedBox(height: 10),
@@ -113,7 +114,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   controller: confirmpassController,
                   hintText: 'Confirm Password',
                   obscureText: true,
-                  Icon: Icons.password,
+                  prefixIcon: Icons.password,
                 ),
                 const SizedBox(height: 25),
                 _isLoading

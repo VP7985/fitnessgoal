@@ -94,12 +94,14 @@ class _LoginPageState extends State<LoginPage> {
                       controller: emailController,
                       hintText: 'Username',
                       obscureText: false, 
+                      prefixIcon:Icons.person,
                     ),
                     SizedBox(height: 10),
                     MyTextField(
                       controller: passwordController,
                       hintText: 'Password',
                       obscureText: true,
+                      prefixIcon: Icons.lock,
                       
                     ),
                     SizedBox(height: 10),
