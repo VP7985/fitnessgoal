@@ -99,18 +99,21 @@ class _RegisterPageState extends State<RegisterPage> {
                   controller: usernameController,
                   hintText: 'Username',
                   obscureText: false,
+                  
                 ),
                 const SizedBox(height: 10),
                 MyTextField(
                   controller: passwordController,
                   hintText: 'Password',
                   obscureText: true,
+                  
                 ),
                 const SizedBox(height: 10),
                 MyTextField(
                   controller: confirmpassController,
                   hintText: 'Confirm Password',
                   obscureText: true,
+                  Icon: Icons.password,
                 ),
                 const SizedBox(height: 25),
                 _isLoading
