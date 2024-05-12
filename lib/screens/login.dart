@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitnessgoal/components/my_button.dart';
 import 'package:fitnessgoal/components/my_textfield.dart';
-
-
+import 'package:fitnessgoal/screens/forgetpassword.dart';
 import 'package:sign_in_button/sign_in_button.dart';
 
 class LoginPage extends StatefulWidget {
@@ -18,6 +17,16 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+
+  void forgetpass(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ForgotPasswordPage(),
+      ),
+    );
+  }
+
   bool isLoading = false;
 
   Future<void> signInUser() async {
@@ -80,7 +89,7 @@ class _LoginPageState extends State<LoginPage> {
                   children: [
                     SizedBox(height: 50),
                     Icon(
-                      Icons.person,
+                      Icons.account_circle,
                       size: 100,
                     ),
                     SizedBox(height: 50),
@@ -95,8 +104,8 @@ class _LoginPageState extends State<LoginPage> {
                     MyTextField(
                       controller: emailController,
                       hintText: 'Username',
-                      obscureText: false, 
-                      prefixIcon:Icons.person,
+                      obscureText: false,
+                      prefixIcon: Icons.person,
                     ),
                     SizedBox(height: 10),
                     MyTextField(
@@ -104,7 +113,6 @@ class _LoginPageState extends State<LoginPage> {
                       hintText: 'Password',
                       obscureText: true,
                       prefixIcon: Icons.lock,
-                      
                     ),
                     SizedBox(height: 10),
                     Padding(
@@ -112,10 +120,12 @@ class _LoginPageState extends State<LoginPage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Text(
-                            'Forgot Password?',
-                            style: TextStyle(color: Colors.grey[600]),
-                          ),
+                          GestureDetector(
+                            onTap:()=> forgetpass(context),
+                            child: Text('Forget password',
+                             style: TextStyle(color: Colors.blue,fontWeight: FontWeight.bold),
+                            ),
+                          )
                         ],
                       ),
                     ),
@@ -136,7 +146,8 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 10.0),
                             child: Text(
                               'Or continue with',
                               style: TextStyle(color: Colors.grey[700]),
@@ -155,13 +166,10 @@ class _LoginPageState extends State<LoginPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-
                         SignInButton(
                           Buttons.google,
                           onPressed: () {},
                         ),
-                       
-                        
                       ],
                     ),
                     SizedBox(height: 50),

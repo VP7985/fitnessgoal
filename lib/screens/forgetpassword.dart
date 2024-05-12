@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fitnessgoal/components/my_button.dart';
 import 'package:flutter/material.dart';
 import 'package:fitnessgoal/screens/login.dart';
 
@@ -102,11 +103,9 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
               ),
             ),
             SizedBox(height: 20.0),
-            ElevatedButton(
-              onPressed: () {
-                _resetPassword();
-              },
-              child: Text('Reset Password'),
+            MyButton(
+              onTap: _resetPassword,
+              text: "Reset Password",
             ),
           ],
         ),

@@ -35,7 +35,8 @@ class _RegisterPageState extends State<RegisterPage> {
         // Registration successful, navigate to LoginPage
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => LoginPage(onTap: widget.onTap)),
+          MaterialPageRoute(
+              builder: (context) => LoginPage(onTap: widget.onTap)),
         );
       } else {
         _showErrorMessage("Passwords don't match!");
@@ -83,7 +84,7 @@ class _RegisterPageState extends State<RegisterPage> {
               children: [
                 const SizedBox(height: 105),
                 const Icon(
-                  Icons.person,
+                  Icons.account_circle,
                   size: 100,
                 ),
                 const SizedBox(height: 50),
@@ -107,7 +108,6 @@ class _RegisterPageState extends State<RegisterPage> {
                   hintText: 'Password',
                   obscureText: true,
                   prefixIcon: Icons.lock,
-                  
                 ),
                 const SizedBox(height: 10),
                 MyTextField(
