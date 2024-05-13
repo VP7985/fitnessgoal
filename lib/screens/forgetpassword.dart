@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitnessgoal/components/my_button.dart';
 import 'package:flutter/material.dart';
-import 'package:fitnessgoal/screens/login.dart';
+
 
 class ForgotPasswordPage extends StatefulWidget {
   @override
