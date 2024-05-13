@@ -5,7 +5,7 @@ class DrawerPage extends StatelessWidget {
   final void Function()? onSignOut;
   final void Function()? onProfile;
 
-  const DrawerPage({super.key,required this.onProfile, this.onSignOut});
+  const DrawerPage({super.key, required this.onProfile, this.onSignOut});
 
   @override
   Widget build(BuildContext context) {
@@ -14,33 +14,39 @@ class DrawerPage extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-            Column(
-              children: [
-                          DrawerHeader(
-            child: Icon(
-              Icons.person,
-              color: Colors.white,
-              size: 64,
-            ),
-          ),
-          MyList(
-            icon: Icons.home,
-            text: 'HOME',
-            onTap: () => Navigator.pop(context),
-          ),
-          MyList(
-            icon: Icons.person,
-            text: 'PROFILE',
-            onTap: onProfile,
+          Column(
+            children: [
+              DrawerHeader(
+                child: Icon(
+                  Icons.person,
+                  color: Colors.white,
+                  size: 64,
+                ),
               ),
-              ],
-            ),
-          Padding(padding: const EdgeInsets.only(bottom:25.0),
-          child:  MyList(
-            icon: Icons.logout,
-            text: 'LOGOUT',
-            onTap: onSignOut,
+              MyList(
+                icon: Icons.home,
+                text: 'HOME',
+                onTap: () => Navigator.pop(context),
+              ),
+              MyList(
+                icon: Icons.person,
+                text: 'PROFILE',
+                onTap: onProfile,
+              ),
+              MyList(
+                icon: Icons.macro_off,
+                text: 'Habit ',
+                onTap: onProfile,
+              ),
+            ],
           ),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 25.0),
+            child: MyList(
+              icon: Icons.logout,
+              text: 'LOGOUT',
+              onTap: onSignOut,
+            ),
           ),
         ],
       ),

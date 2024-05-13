@@ -91,7 +91,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
             ),
             SizedBox(height: 20.0),
             Text(
-              'Enter your email address below to reset your password.',
+              'Enter your email below to reset your Password.',
               style: TextStyle(fontSize: 16.0),
               textAlign: TextAlign.center,
             ),
@@ -99,7 +99,9 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
             TextFormField(
               decoration: InputDecoration(
                 labelText: 'Email',
-                border: OutlineInputBorder(),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                ),
               ),
             ),
             SizedBox(height: 20.0),
