@@ -44,6 +44,7 @@ dependencies:
   flutter_launcher_icons: ^0.13.1
   sign_in_button: ^3.2.0
   salomon_bottom_bar: ^3.3.2
+  google_sign_in: ^6.2.1
 
 dev_dependencies:
   flutter_test:

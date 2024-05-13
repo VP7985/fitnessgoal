@@ -55,7 +55,7 @@ class _habiittrackerState extends State<habiittracker> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text('Settings for' + habitlist[index][0]),
+            title: Text('Settings for ' + habitlist[index][0]),
           );
         });
   }

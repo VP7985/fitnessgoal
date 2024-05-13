@@ -48,34 +48,37 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(),
-        drawer: DrawerPage(
-          onProfile: goToProfilePage,
-          onSignOut: signUserOut,
+      appBar: AppBar(),
+      drawer: DrawerPage(
+        onProfile: goToProfilePage,
+        onSignOut: signUserOut,
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              'Welcome to Home Page ',
+              style: TextStyle(fontSize: 24),
+            ),
+            const Text(
+              'To Add new Habit Push Add Button',
+            ),
+            Text(
+              '',
+              style: Theme.of(context).textTheme.headlineMedium,
+            ),
+          ],
         ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                'Welcome to Home Page ',
-                style: TextStyle(fontSize: 24),
-              ),
-              const Text(
-                'To Add new Habit Push Add Button',
-              ),
-              Text(
-                '',
-                style: Theme.of(context).textTheme.headlineMedium,
-              ),
-            ],
-          ),
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            widget.habittracker(context);
-          },
-          child: Icon(Icons.add),
-        ));
+      ),
+      floatingActionButton: FloatingActionButton.large(
+        foregroundColor: Colors.blueGrey,
+        backgroundColor: Colors.white,
+        onPressed: () {
+          widget.habittracker(context);
+        },
+        child: const Icon(Icons.edit_outlined),
+      ),
+    );
   }
 }

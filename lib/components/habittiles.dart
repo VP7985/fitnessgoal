@@ -65,7 +65,7 @@ class HabitTile extends StatelessWidget {
                     width: 50,
                     child: Stack(children: [
                       CircularPercentIndicator(
-                        radius: 50,
+                        radius: 30,
                         percent: percentcomplete() < 1 ? percentcomplete() : 1,
                         progressColor: percentcomplete() > 0.5
                             ? (percentcomplete() > 0.75

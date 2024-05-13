@@ -1,6 +1,5 @@
 import 'package:fitnessgoal/components/my_list.dart';
 import 'package:flutter/material.dart';
-import 'package:cupertino_icons/cupertino_icons.dart';
 
 class DrawerPage extends StatelessWidget {
   final void Function()? onSignOut;

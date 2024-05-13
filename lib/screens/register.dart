@@ -82,12 +82,12 @@ class _RegisterPageState extends State<RegisterPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SizedBox(height: 105),
+                const SizedBox(height: 10),
                 const Icon(
                   Icons.account_circle,
                   size: 100,
                 ),
-                const SizedBox(height: 50),
+                const SizedBox(height: 30),
                 Text(
                   'Create an account',
                   style: TextStyle(
@@ -98,23 +98,23 @@ class _RegisterPageState extends State<RegisterPage> {
                 const SizedBox(height: 25),
                 MyTextField(
                   controller: usernameController,
-                  hintText: 'Username',
                   obscureText: false,
                   prefixIcon: Icons.person,
+                  lableText: '',
                 ),
                 const SizedBox(height: 10),
                 MyTextField(
                   controller: passwordController,
-                  hintText: 'Password',
                   obscureText: true,
                   prefixIcon: Icons.lock,
+                  lableText: '',
                 ),
                 const SizedBox(height: 10),
                 MyTextField(
                   controller: confirmpassController,
-                  hintText: 'Confirm Password',
                   obscureText: true,
                   prefixIcon: Icons.password,
+                  lableText: '',
                 ),
                 const SizedBox(height: 25),
                 _isLoading
