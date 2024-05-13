@@ -19,88 +19,116 @@ class _LoginPageState extends State<LoginPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
-  final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
+  // final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
 
-  GoogleSignInAccount? _currentUser;
+  // GoogleSignInAccount? _currentUser;
 
-  @override
-  void initState() {
-    _googleSignIn.onCurrentUserChanged.listen((account) {
-      setState(() {
-        _currentUser = account;
-      });
-    });
-    _googleSignIn.signInSilently();
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   _googleSignIn.onCurrentUserChanged.listen((account) {
+  //     setState(() {
+  //       _currentUser = account;
+  //     });
+  //   });
+  //   _googleSignIn.signInSilently();
+  //   super.initState();
+  // }
 
-  Widget  _buildWidget() {
-    GoogleSignInAccount? user = _currentUser;
-    if (user != null) {
-      return Padding(
-        padding: const EdgeInsets.fromLTRB(2, 12, 2, 12),
-        child: Column(
-          children: [
-            ListTile(
-              leading: GoogleUserCircleAvatar(identity: user),
-              title: Text(
-                user.displayName ?? '',
-                style: TextStyle(fontSize: 22),
-              ),
-              subtitle: Text(user.email, style: TextStyle(fontSize: 22)),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            const Text(
-              'Signed in successfully',
-              style: TextStyle(fontSize: 20),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            ElevatedButton(onPressed: signOut, child: const Text('Sign out'))
-          ],
-        ),
-      );
-    } else {
-      return Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Column(
-          children: [
-            const SizedBox(
-              height: 20,
-            ),
-            const Text(
-              'You are not signed in',
-              style: TextStyle(fontSize: 30),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            ElevatedButton(
-                onPressed: signIn,
-                child: const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text('Sign in', style: TextStyle(fontSize: 30)),
-                )),
-          ],
-        ),
-      );
-    }
-  }
+  // Widget  _buildWidget() {
+  //   GoogleSignInAccount? user = _currentUser;
+  //   if (user != null) {
+  //     return Padding(
+  //       padding: const EdgeInsets.fromLTRB(2, 12, 2, 12),
+  //       child: Column(
+  //         children: [
+  //           ListTile(
+  //             leading: GoogleUserCircleAvatar(identity: user),
+  //             title: Text(
+  //               user.displayName ?? '',
+  //               style: TextStyle(fontSize: 22),
+  //             ),
+  //             subtitle: Text(user.email, style: TextStyle(fontSize: 22)),
+  //           ),
+  //           const SizedBox(
+  //             height: 20,
+  //           ),
+  //           const Text(
+  //             'Signed in successfully',
+  //             style: TextStyle(fontSize: 20),
+  //           ),
+  //           const SizedBox(
+  //             height: 10,
+  //           ),
+  //           ElevatedButton(onPressed: signOut, child: const Text('Sign out'))
+  //         ],
+  //       ),
+  //     );
+  //   } else {
+  //     return Padding(
+  //       padding: const EdgeInsets.all(12.0),
+  //       child: Column(
+  //         children: [
+  //           const SizedBox(
+  //             height: 20,
+  //           ),
+  //           const Text(
+  //             'You are not signed in',
+  //             style: TextStyle(fontSize: 30),
+  //           ),
+  //           const SizedBox(
+  //             height: 10,
+  //           ),
+  //           ElevatedButton(
+  //               onPressed: signIn,
+  //               child: const Padding(
+  //                 padding: EdgeInsets.all(8.0),
+  //                 child: Text('Sign in', style: TextStyle(fontSize: 30)),
+  //               )),
+  //         ],
+  //       ),
+  //     );
+  //   }
+  // }
 
-  void signOut() {
-    _googleSignIn.disconnect();
-  }
+  // void signOut() {
+  //   _googleSignIn.disconnect();
+  // }
 
-  Future<void> signIn() async {
+  // Future<void> signIn() async {
+  //   try {
+  //     await _googleSignIn.signIn();
+  //   } catch (e) {
+  //     print('Error signing in $e');
+  //   }
+  // }
+googleLogin() async {
+    print("googleLogin method Called");
+    GoogleSignIn _googleSignIn = GoogleSignIn();
     try {
-      await _googleSignIn.signIn();
-    } catch (e) {
-      print('Error signing in $e');
+      var reslut = await _googleSignIn.signIn();
+      if (reslut == null) {
+        return;
+      }
+
+      final userData = await reslut.authentication;
+      final credential = GoogleAuthProvider.credential(
+          accessToken: userData.accessToken, idToken: userData.idToken);
+      var finalResult =
+          await FirebaseAuth.instance.signInWithCredential(credential);
+      print("Result $reslut");
+      print(reslut.displayName);
+      print(reslut.email);
+      print(reslut.photoUrl);
+    } catch (error) {
+      print(error);
     }
   }
+
+  Future<void> logout() async {
+    await GoogleSignIn().disconnect();
+    FirebaseAuth.instance.signOut();
+  }
+
 
   void forgetpass(BuildContext context) {
     Navigator.push(
@@ -196,7 +224,7 @@ class _LoginPageState extends State<LoginPage> {
                       controller: passwordController,
                       obscureText: true,
                       prefixIcon: Icons.lock,
-                      lableText: 'Password',
+                       lableText: 'Password',
                     ),
                     SizedBox(height: 10),
                     Padding(
@@ -257,7 +285,7 @@ class _LoginPageState extends State<LoginPage> {
                           height: 50,
                           child: ElevatedButton(
                             onPressed: () {
-                              _buildWidget();
+                              googleLogin();
                             },
                             child: Text("Sign up with Google"),
                           ),

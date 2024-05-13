@@ -70,7 +70,7 @@ class HabitTile extends StatelessWidget {
                         progressColor: percentcomplete() > 0.5
                             ? (percentcomplete() > 0.75
                                 ? Colors.green
-                                : Colors.orange)
+                                : const Color.fromARGB(255, 34, 32, 28))
                             : Colors.red,
                       ),
                       //play pause button
