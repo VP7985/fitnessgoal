@@ -121,9 +121,12 @@ class _LoginPageState extends State<LoginPage> {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           GestureDetector(
-                            onTap:()=> forgetpass(context),
-                            child: Text('Forget password',
-                             style: TextStyle(color: Colors.blue,fontWeight: FontWeight.bold),
+                            onTap: () => forgetpass(context),
+                            child: Text(
+                              'Forget password',
+                              style: TextStyle(
+                                  color: Colors.blue,
+                                  fontWeight: FontWeight.bold),
                             ),
                           )
                         ],
@@ -166,9 +169,12 @@ class _LoginPageState extends State<LoginPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        SignInButton(
-                          Buttons.google,
-                          onPressed: () {},
+                        SizedBox(
+                          height: 50,
+                          child: ElevatedButton(
+                            onPressed: () {},
+                            child: Text("Sign up with Google"),
+                          ),
                         ),
                       ],
                     ),
