@@ -22,7 +22,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   Future<void> _signUp() async {
     setState(() {
-      _isLoading = true; // show loading indicator
+      _isLoading = true; 
     });
 
     try {
