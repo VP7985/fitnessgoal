@@ -1,23 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:fitnessgoal/screens/add_habit.dart';
 import 'package:flutter/material.dart';
 import 'package:fitnessgoal/components/drawer.dart';
 import 'package:fitnessgoal/screens/profile_page.dart';
-import 'package:fitnessgoal/screens/habit_tracking.dart';
 
 class HomePage extends StatefulWidget {
   final String userName; // New parameter for user name
   final Function()? onProfile;
   final void Function()? onSignOut;
-
-  void habittracker(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => habiittracker(),
-      ),
-    );
-  }
 
   const HomePage({
     Key? key,
@@ -71,13 +62,14 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton.large(
+      floatingActionButton: FloatingActionButton.small(
         foregroundColor: Colors.blueGrey,
         backgroundColor: Colors.white,
         onPressed: () {
-          widget.habittracker(context);
+          Navigator.push(
+              context, MaterialPageRoute(builder: (builder) => AddHabitPage()));
         },
-        child: const Icon(Icons.edit_outlined),
+        child: const Icon(Icons.add),
       ),
     );
   }
