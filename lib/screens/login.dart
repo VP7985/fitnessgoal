@@ -1,10 +1,11 @@
+import 'package:fitnessgoal/screens/homepage.dart';
+import 'package:fitnessgoal/screens/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:fitnessgoal/screens/forgetpassword.dart';
 import 'package:fitnessgoal/components/my_button.dart';
 import 'package:fitnessgoal/components/my_textfield.dart';
-import 'package:fitnessgoal/screens/forgetpassword.dart';
-import 'package:sign_in_button/sign_in_button.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginPage extends StatefulWidget {
   final Function()? onTap;
@@ -19,118 +20,66 @@ class _LoginPageState extends State<LoginPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
-  // final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
+  bool _isLoading = false;
 
-  // GoogleSignInAccount? _currentUser;
+  Future<void> googleLogin() async {
+    setState(() {
+      _isLoading = true;
+    });
 
-  // @override
-  // void initState() {
-  //   _googleSignIn.onCurrentUserChanged.listen((account) {
-  //     setState(() {
-  //       _currentUser = account;
-  //     });
-  //   });
-  //   _googleSignIn.signInSilently();
-  //   super.initState();
-  // }
-
-  // Widget  _buildWidget() {
-  //   GoogleSignInAccount? user = _currentUser;
-  //   if (user != null) {
-  //     return Padding(
-  //       padding: const EdgeInsets.fromLTRB(2, 12, 2, 12),
-  //       child: Column(
-  //         children: [
-  //           ListTile(
-  //             leading: GoogleUserCircleAvatar(identity: user),
-  //             title: Text(
-  //               user.displayName ?? '',
-  //               style: TextStyle(fontSize: 22),
-  //             ),
-  //             subtitle: Text(user.email, style: TextStyle(fontSize: 22)),
-  //           ),
-  //           const SizedBox(
-  //             height: 20,
-  //           ),
-  //           const Text(
-  //             'Signed in successfully',
-  //             style: TextStyle(fontSize: 20),
-  //           ),
-  //           const SizedBox(
-  //             height: 10,
-  //           ),
-  //           ElevatedButton(onPressed: signOut, child: const Text('Sign out'))
-  //         ],
-  //       ),
-  //     );
-  //   } else {
-  //     return Padding(
-  //       padding: const EdgeInsets.all(12.0),
-  //       child: Column(
-  //         children: [
-  //           const SizedBox(
-  //             height: 20,
-  //           ),
-  //           const Text(
-  //             'You are not signed in',
-  //             style: TextStyle(fontSize: 30),
-  //           ),
-  //           const SizedBox(
-  //             height: 10,
-  //           ),
-  //           ElevatedButton(
-  //               onPressed: signIn,
-  //               child: const Padding(
-  //                 padding: EdgeInsets.all(8.0),
-  //                 child: Text('Sign in', style: TextStyle(fontSize: 30)),
-  //               )),
-  //         ],
-  //       ),
-  //     );
-  //   }
-  // }
-
-  // void signOut() {
-  //   _googleSignIn.disconnect();
-  // }
-
-  // Future<void> signIn() async {
-  //   try {
-  //     await _googleSignIn.signIn();
-  //   } catch (e) {
-  //     print('Error signing in $e');
-  //   }
-  // }
-googleLogin() async {
-    print("googleLogin method Called");
-    GoogleSignIn _googleSignIn = GoogleSignIn();
     try {
-      var reslut = await _googleSignIn.signIn();
-      if (reslut == null) {
+      GoogleSignIn _googleSignIn = GoogleSignIn();
+      var result = await _googleSignIn.signIn();
+      if (result == null) {
+        // User canceled sign-in
+        setState(() {
+          _isLoading = false;
+        });
         return;
       }
 
-      final userData = await reslut.authentication;
+      final GoogleSignInAuthentication googleAuth = await result.authentication;
       final credential = GoogleAuthProvider.credential(
-          accessToken: userData.accessToken, idToken: userData.idToken);
-      var finalResult =
-          await FirebaseAuth.instance.signInWithCredential(credential);
-      print("Result $reslut");
-      print(reslut.displayName);
-      print(reslut.email);
-      print(reslut.photoUrl);
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      await FirebaseAuth.instance.signInWithCredential(credential);
+
+      // Navigate to the homepage after successful login
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            builder: (context) => HomePage(
+                  userName: '',
+                  onProfile: () {
+                    ProfilePage();
+                  },
+                  onSignOut: () {
+                    LoginPage(onTap: (){});
+                  },
+                )),
+      );
     } catch (error) {
-      print(error);
+      print("Error during Google sign-in: $error");
+      // Handle error if necessary
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
   Future<void> logout() async {
-    await GoogleSignIn().disconnect();
-    FirebaseAuth.instance.signOut();
+    try {
+      await GoogleSignIn().disconnect();
+      await FirebaseAuth.instance.signOut();
+    } catch (error) {
+      print("Error during logout: $error");
+      // Handle error if necessary
+    }
   }
 
-
-  void forgetpass(BuildContext context) {
+  void forgetPassword(BuildContext context) {
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -139,11 +88,9 @@ googleLogin() async {
     );
   }
 
-  bool isLoading = false;
-
   Future<void> signInUser() async {
     setState(() {
-      isLoading = true;
+      _isLoading = true;
     });
 
     try {
@@ -163,7 +110,7 @@ googleLogin() async {
     }
 
     setState(() {
-      isLoading = false;
+      _isLoading = false;
     });
   }
 
@@ -224,7 +171,7 @@ googleLogin() async {
                       controller: passwordController,
                       obscureText: true,
                       prefixIcon: Icons.lock,
-                       lableText: 'Password',
+                      lableText: 'Password',
                     ),
                     SizedBox(height: 10),
                     Padding(
@@ -233,14 +180,15 @@ googleLogin() async {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           GestureDetector(
-                            onTap: () => forgetpass(context),
+                            onTap: () => forgetPassword(context),
                             child: Text(
                               'Forget password',
                               style: TextStyle(
-                                  color: Colors.blue,
-                                  fontWeight: FontWeight.bold),
+                                color: Colors.blue,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                          )
+                          ),
                         ],
                       ),
                     ),
@@ -284,10 +232,10 @@ googleLogin() async {
                         SizedBox(
                           height: 50,
                           child: ElevatedButton(
-                            onPressed: () {
-                              googleLogin();
-                            },
-                            child: Text("Sign up with Google"),
+                            onPressed: _isLoading ? null : googleLogin,
+                            child: _isLoading
+                                ? CircularProgressIndicator()
+                                : Text("Sign In With Google"),
                           ),
                         ),
                       ],
@@ -316,7 +264,7 @@ googleLogin() async {
                 ),
               ),
             ),
-            if (isLoading)
+            if (_isLoading)
               Container(
                 color: Colors.black.withOpacity(0.3),
                 child: Center(

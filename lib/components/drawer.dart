@@ -1,14 +1,17 @@
-import 'package:fitnessgoal/components/my_list.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fitnessgoal/components/my_list.dart';
 
 class DrawerPage extends StatelessWidget {
   final void Function()? onSignOut;
   final void Function()? onProfile;
 
-  const DrawerPage({super.key, required this.onProfile, this.onSignOut});
+  const DrawerPage({Key? key, required this.onProfile, this.onSignOut});
 
   @override
   Widget build(BuildContext context) {
+    final User? user = FirebaseAuth.instance.currentUser;
+
     return Drawer(
       backgroundColor: Colors.blue,
       child: Column(
@@ -16,11 +19,22 @@ class DrawerPage extends StatelessWidget {
         children: [
           Column(
             children: [
-              DrawerHeader(
-                child: Icon(
-                  Icons.person,
-                  color: Colors.white,
-                  size: 64,
+              UserAccountsDrawerHeader(
+                accountName: Text(
+                  user?.displayName ?? 'User', // Display name if available
+                  style: TextStyle(color: Colors.white),
+                ),
+                accountEmail: Text(
+                  user?.email ?? 'No Email', // Display email if available
+                  style: TextStyle(color: Colors.white),
+                ),
+                currentAccountPicture: CircleAvatar(
+                  backgroundImage: user?.photoURL != null
+                      ? NetworkImage(user!.photoURL!)
+                      : AssetImage('assets/default_profile_image.png') as ImageProvider,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.blue,
                 ),
               ),
               MyList(
