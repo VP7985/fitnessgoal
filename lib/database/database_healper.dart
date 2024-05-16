@@ -1,22 +1,25 @@
-import 'package:fitnessgoal/models/habit.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'package:fitnessgoal/models/habit.dart';
 
 class DatabaseHelper {
   static final DatabaseHelper _instance = DatabaseHelper._internal();
   factory DatabaseHelper() => _instance;
+
   static Database? _database;
 
   DatabaseHelper._internal();
 
   Future<Database> get database async {
     if (_database != null) return _database!;
+
     _database = await _initDatabase();
     return _database!;
   }
 
   Future<Database> _initDatabase() async {
     String path = join(await getDatabasesPath(), 'habits.db');
+
     return await openDatabase(
       path,
       version: 1,
@@ -30,8 +33,11 @@ class DatabaseHelper {
 
   Future<void> insertHabit(Habit habit) async {
     final db = await database;
-    await db.insert('habits', habit.toMap(),
-        conflictAlgorithm: ConflictAlgorithm.replace);
+    await db.insert(
+      'habits',
+      habit.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
   }
 
   Future<List<Habit>> getHabits() async {
@@ -46,5 +52,24 @@ class DatabaseHelper {
         time: maps[i]['time'],
       );
     });
+  }
+
+  Future<void> updateHabit(Habit habit) async {
+    final db = await database;
+    await db.update(
+      'habits',
+      habit.toMap(),
+      where: 'id = ?',
+      whereArgs: [habit.id],
+    );
+  }
+
+  Future<void> deleteHabit(int id) async {
+    final db = await database;
+    await db.delete(
+      'habits',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
   }
 }

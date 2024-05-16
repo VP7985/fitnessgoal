@@ -16,7 +16,7 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   late User? _currentUser;
-  File? _imageFile;
+  XFile? _imageFile;
 
   @override
   void initState() {
@@ -30,7 +30,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
     setState(() {
       if (pickedFile != null) {
-        _imageFile = File(pickedFile.path);
+        _imageFile = XFile(pickedFile.path);
         // You can upload the _imageFile to Firebase Storage or display it directly
       }
     });
@@ -51,7 +51,7 @@ class _ProfilePageState extends State<ProfilePage> {
               child: CircleAvatar(
                 radius: 72,
                 backgroundImage: _imageFile != null
-                    ? FileImage(_imageFile!)
+                    ? FileImage(_imageFile! as File)
                     : _currentUser?.photoURL != null
                         ? NetworkImage(_currentUser!.photoURL!)
                         : AssetImage('assets/default_profile_image.png')
