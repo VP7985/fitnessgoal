@@ -1,10 +1,12 @@
+import 'package:fitnessgoal/components/my_button.dart';
 import 'package:flutter/material.dart';
 import 'package:fitnessgoal/auth/login_reg.dart';
-
 import 'package:fitnessgoal/components/my_textfield.dart';
 import 'package:fitnessgoal/screens/homepage.dart';
 import 'package:fitnessgoal/screens/login.dart';
 import 'package:fitnessgoal/screens/profile_page.dart';
+import 'package:fitnessgoal/database/database_healper.dart'; // Import the database helper
+import 'package:fitnessgoal/models/habit.dart'; // Import the habit model
 
 class AddHabitPage extends StatefulWidget {
   const AddHabitPage({Key? key}) : super(key: key);
@@ -54,6 +56,45 @@ class _AddHabitPageState extends State<AddHabitPage> {
     }
   }
 
+  Future<void> _saveHabit() async {
+    if (habitTitle.text.isNotEmpty &&
+        titleDescription.text.isNotEmpty &&
+        selectedDate != null &&
+        selectedTime != null) {
+      final habit = Habit(
+        title: habitTitle.text,
+        description: titleDescription.text,
+        date: selectedDate!.toString().substring(0, 10),
+        time: selectedTime!.format(context),
+      );
+      await DatabaseHelper().insertHabit(habit);
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => HomePage(
+            userName: 'Text',
+            onProfile: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ProfilePage(),
+                ),
+              );
+            },
+            onSignOut: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => LoginOrReg(),
+                ),
+              );
+            },
+          ),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,9 +106,7 @@ class _AddHabitPageState extends State<AddHabitPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
-                height: 25,
-              ),
+              SizedBox(height: 25),
               IconButton(
                 onPressed: () {
                   Navigator.push(
@@ -98,7 +137,8 @@ class _AddHabitPageState extends State<AddHabitPage> {
                 icon: Icon(Icons.arrow_back),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 5),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 25, vertical: 5),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -113,44 +153,61 @@ class _AddHabitPageState extends State<AddHabitPage> {
                     SizedBox(height: 50),
                     label("Habit Title"),
                     SizedBox(height: 20),
-                    MyTextField(
-                      controller: habitTitle,
-                      obscureText: true,
-                      prefixIcon: Icons.title,
-                      lableText: 'Habit Title',
+                    Center(
+                      child: MyTextField(
+                        controller: habitTitle,
+                        obscureText: false,
+                        prefixIcon: Icons.title,
+                        lableText: 'Habit Title',
+                      ),
                     ),
                     SizedBox(height: 20),
                     MyTextField(
                       controller: titleDescription,
-                      obscureText: true,
+                      obscureText: false,
                       prefixIcon: Icons.description,
                       lableText: 'Habit Description',
                     ),
                     SizedBox(height: 20),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Color.fromARGB(255, 13, 71, 161),
+                          ),
                           onPressed: () => _selectDate(context),
-                          child: Text(selectedDate == null
-                              ? 'Select Date'
-                              : 'Date: ${selectedDate!.toString().substring(0, 10)}'),
+                          child: Text(
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Color.fromARGB(255, 255, 255, 255),
+                            ),
+                            selectedDate == null
+                                ? 'Select Date'
+                                : 'Date: ${selectedDate!.toString().substring(0, 10)}',
+                          ),
                         ),
                         SizedBox(width: 10),
                         ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Color.fromARGB(255, 13, 71, 161),
+                          ),
                           onPressed: () => _selectTime(context),
-                          child: Text(selectedTime == null
-                              ? 'Select Time'
-                              : 'Time: ${selectedTime!.format(context)}'),
+                          child: Text(
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Color.fromARGB(255, 255, 255, 255),
+                              ),
+                              selectedTime == null
+                                  ? 'Select Time'
+                                  : 'Time: ${selectedTime!.format(context)}'),
                         ),
                       ],
                     ),
                     SizedBox(height: 20),
-                    ElevatedButton(
-                      onPressed: () {
-                        // TODO: Save habit details and navigate back to HomePage
-                        Navigator.pop(context);
-                      },
-                      child: Text('Save Habit'),
+                    MyButton(
+                      onTap: _saveHabit,
+                      text: ('Save Habit'),
                     ),
                   ],
                 ),
@@ -161,15 +218,15 @@ class _AddHabitPageState extends State<AddHabitPage> {
       ),
     );
   }
-}
 
-Widget label(String label) {
-  return Text(
-    label,
-    style: TextStyle(
-      fontSize: 22,
-      color: Colors.black,
-      fontWeight: FontWeight.bold,
-    ),
-  );
+  Widget label(String label) {
+    return Text(
+      label,
+      style: TextStyle(
+        fontSize: 22,
+        color: Colors.black,
+        fontWeight: FontWeight.bold,
+      ),
+    );
+  }
 }
