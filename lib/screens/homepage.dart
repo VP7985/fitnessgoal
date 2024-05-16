@@ -85,17 +85,13 @@ class _HomePageState extends State<HomePage> {
           }
         },
       ),
-      floatingActionButton: FloatingActionButton.small(
-      floatingActionButton: FloatingActionButton.small(
+      floatingActionButton: FloatingActionButton.large(
         foregroundColor: Colors.blueGrey,
         backgroundColor: Colors.white,
         onPressed: () {
           Navigator.push(
               context, MaterialPageRoute(builder: (builder) => AddHabitPage()));
-          Navigator.push(
-              context, MaterialPageRoute(builder: (builder) => AddHabitPage()));
         },
-        child: const Icon(Icons.add),
         child: const Icon(Icons.add),
       ),
     );
