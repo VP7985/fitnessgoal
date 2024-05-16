@@ -32,6 +32,7 @@ class _habiittrackerState extends State<habiittracker> {
       Timer.periodic(
         Duration(seconds: 1),
         (timer) {
+           
           if (habitlist[index][1]) {
             timer.cancel();
           }
@@ -65,7 +66,7 @@ class _habiittrackerState extends State<habiittracker> {
     return Scaffold(
       backgroundColor: Colors.grey[300],
       appBar: AppBar(
-        backgroundColor: Colors.grey[900],
+        backgroundColor: Color.fromARGB(255, 52, 145, 231),
         title: const Text('Consistency is key.'),
         centerTitle: false,
       ),

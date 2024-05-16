@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fitnessgoal/components/habittiles.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
 class HabitTile extends StatelessWidget {
@@ -51,7 +50,7 @@ class HabitTile extends StatelessWidget {
         padding: EdgeInsets.all(20),
         decoration: BoxDecoration(
           color: Colors.grey[200],
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(10),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -62,15 +61,15 @@ class HabitTile extends StatelessWidget {
                   onTap: onTap,
                   child: SizedBox(
                     height: 60,
-                    width: 50,
+                    width: 60,
                     child: Stack(children: [
                       CircularPercentIndicator(
-                        radius: 30,
+                        radius: 40,
                         percent: percentcomplete() < 1 ? percentcomplete() : 1,
                         progressColor: percentcomplete() > 0.5
                             ? (percentcomplete() > 0.75
                                 ? Colors.green
-                                : const Color.fromARGB(255, 34, 32, 28))
+                                : Colors.orange)
                             : Colors.red,
                       ),
                       //play pause button

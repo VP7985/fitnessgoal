@@ -56,7 +56,7 @@ class _LoginPageState extends State<LoginPage> {
                     ProfilePage();
                   },
                   onSignOut: () {
-                    LoginPage(onTap: (){});
+                    LoginPage(onTap: () {});
                   },
                 )),
       );
