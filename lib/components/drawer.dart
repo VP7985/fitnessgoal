@@ -6,14 +6,14 @@ class DrawerPage extends StatelessWidget {
   final void Function()? onSignOut;
   final void Function()? onProfile;
 
-  const DrawerPage({Key? key, required this.onProfile, this.onSignOut});
+  const DrawerPage({Key? key, required this.onProfile, this.onSignOut}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final User? user = FirebaseAuth.instance.currentUser;
 
     return Drawer(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.grey[900], // Set the background color here
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -34,7 +34,7 @@ class DrawerPage extends StatelessWidget {
                       : AssetImage('assets/default_profile_image.png') as ImageProvider,
                 ),
                 decoration: BoxDecoration(
-                  color: Colors.black,
+                  color: Colors.grey[900], // Match the background color
                 ),
               ),
               MyList(
@@ -47,7 +47,6 @@ class DrawerPage extends StatelessWidget {
                 text: 'PROFILE',
                 onTap: onProfile,
               ),
-
             ],
           ),
           Padding(

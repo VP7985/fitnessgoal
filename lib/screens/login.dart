@@ -35,7 +35,6 @@ class _LoginPageState extends State<LoginPage> {
           email: emailController.text,
           password: passwordController.text,
         );
-
         _navigateToHomePage();
       } else {
         _showErrorMessage("Please enter valid email and password.");
@@ -43,11 +42,11 @@ class _LoginPageState extends State<LoginPage> {
     } catch (e) {
       _showErrorMessage("Login failed. Please try again.");
       print("Error: $e");
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
-
-    setState(() {
-      _isLoading = false;
-    });
   }
 
   Future<void> _googleLogin() async {
@@ -57,6 +56,10 @@ class _LoginPageState extends State<LoginPage> {
 
     try {
       GoogleSignIn _googleSignIn = GoogleSignIn();
+      
+      // Sign out from the Google account if already signed in
+      await _googleSignIn.signOut();
+      
       var result = await _googleSignIn.signIn();
       if (result == null) {
         setState(() {
@@ -76,6 +79,8 @@ class _LoginPageState extends State<LoginPage> {
       _navigateToHomePage();
     } catch (error) {
       print("Error during Google sign-in: $error");
+      _showErrorMessage("Google sign-in failed. Please try again.");
+    } finally {
       setState(() {
         _isLoading = false;
       });
@@ -129,7 +134,7 @@ class _LoginPageState extends State<LoginPage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SizedBox(height: 30),
+                    SizedBox(height: 100),
                     Icon(
                       Icons.account_circle,
                       size: 100,

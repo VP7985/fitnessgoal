@@ -173,7 +173,10 @@ class _HomePageState extends State<HomePage> {
           );
           _refreshHabitList();
         },
-        child: Icon(Icons.add),
+        child: Icon(Icons.add,color: Colors.white,),
+        
+        backgroundColor: Colors.grey[900],
+       
       ),
     );
   }

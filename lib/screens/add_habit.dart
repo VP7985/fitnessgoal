@@ -98,7 +98,7 @@ class _AddHabitPageState extends State<AddHabitPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Goal'),
+        title: Text('Add Habit'),
       ),
       body: Padding(
         padding: EdgeInsets.all(20.0),
