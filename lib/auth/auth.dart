@@ -5,7 +5,7 @@ import 'package:fitnessgoal/screens/homepage.dart';
 import 'package:fitnessgoal/screens/profile_page.dart';
 import 'package:flutter/material.dart';
 
-class AuthPage extends StatelessWidget {
+class AuthPage extends StatelessWidget { 
   const AuthPage({Key? key});
 
   @override

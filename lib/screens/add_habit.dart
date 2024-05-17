@@ -1,3 +1,5 @@
+import 'package:fitnessgoal/components/my_button.dart';
+import 'package:fitnessgoal/components/my_textfield.dart';
 import 'package:fitnessgoal/database/database_healper.dart';
 import 'package:flutter/material.dart';
 import 'package:fitnessgoal/components/my_textfield.dart';
@@ -102,6 +104,7 @@ class _AddHabitPageState extends State<AddHabitPage> {
         title: Text('Add Habit'),
       ),
       body: Padding(
+
         padding: EdgeInsets.all(20.0),
         child: SingleChildScrollView(
           child: Column(
@@ -136,10 +139,69 @@ class _AddHabitPageState extends State<AddHabitPage> {
                       selectedDate == null
                           ? 'Select Date'
                           : 'Date: ${selectedDate!.toString().substring(0, 10)}',
+
+        padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 5),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "Create A Goal",
+              style: TextStyle(
+                fontSize: 33,
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(height: 50),
+            // Changed 'label' to 'Text'
+            SizedBox(height: 20),
+            Center(
+              child: MyTextField(
+                controller: habitTitle,
+                obscureText: false,
+                prefixIcon: Icons.title,
+                lableText: 'Goal Title',
+              ),
+            ),
+            SizedBox(height: 20),
+            MyTextField(
+              controller: titleDescription,
+              obscureText: false,
+              prefixIcon: Icons.description,
+              lableText: 'Habit Description',
+            ),
+            SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color.fromARGB(255, 13, 71, 161),
+                  ),
+                  onPressed: () => _selectDate(context),
+                  child: Text(
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Color.fromARGB(255, 255, 255, 255),
+                    ),
+                    selectedDate == null
+                        ? 'Select Date'
+                        : 'Date: ${selectedDate!.toString().substring(0, 10)}',
+                  ),
+                ),
+                SizedBox(width: 10),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color.fromARGB(255, 13, 71, 161),
+                  ),
+                  onPressed: () => _selectTime(context),
+                  child: Text(
+
                       style: TextStyle(
                         fontSize: 16,
                         color: Color.fromARGB(255, 255, 255, 255),
                       ),
+
                     ),
                   ),
                   SizedBox(width: 10),
@@ -167,6 +229,20 @@ class _AddHabitPageState extends State<AddHabitPage> {
               ),
             ],
           ),
+
+                      selectedTime == null
+                          ? 'Select Time'
+                          : 'Time: ${selectedTime!.format(context)}'),
+                ),
+              ],
+            ),
+            SizedBox(height: 20),
+            MyButton(
+              onTap: _saveHabit,
+              text: ('Save Habit'),
+            ),
+          ],
+
         ),
       ),
     );

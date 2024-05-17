@@ -105,7 +105,8 @@ class _HomePageState extends State<HomePage> {
                   final progressBarColor = _getProgressBarColor(dueDate);
 
                   return ListTile(
-                    leading: Icon(Icons.check_circle_outline, color: Colors.green),
+                    leading:
+                        Icon(Icons.check_circle_outline, color: Colors.green),
                     title: Text(
                       habit.title,
                       style: TextStyle(fontWeight: FontWeight.bold),
