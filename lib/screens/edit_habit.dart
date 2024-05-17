@@ -98,7 +98,7 @@ class _EditHabitPageState extends State<EditHabitPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Edit Goal'),
+        title: Text('Edit Habit'),
       ),
       body: Padding(
         padding: EdgeInsets.all(20.0),
@@ -107,7 +107,7 @@ class _EditHabitPageState extends State<EditHabitPage> {
           children: [
             TextField(
               controller: habitTitleController,
-              decoration: InputDecoration(labelText: 'Goal Title'),
+              decoration: InputDecoration(labelText: 'Habit Title'),
             ),
             TextField(
               controller: descriptionController,
@@ -144,7 +144,7 @@ class _EditHabitPageState extends State<EditHabitPage> {
             SizedBox(height: 20.0),
             ElevatedButton(
               onPressed: _updateHabit,
-              child: Text('Update Goal'),
+              child: Text('Update Habit'),
             ),
           ],
         ),

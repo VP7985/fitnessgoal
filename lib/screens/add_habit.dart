@@ -1,12 +1,9 @@
-import 'package:fitnessgoal/components/my_button.dart';
+import 'package:fitnessgoal/database/database_healper.dart';
 import 'package:flutter/material.dart';
-import 'package:fitnessgoal/auth/login_reg.dart';
 import 'package:fitnessgoal/components/my_textfield.dart';
-import 'package:fitnessgoal/screens/homepage.dart';
-import 'package:fitnessgoal/screens/login.dart';
-import 'package:fitnessgoal/screens/profile_page.dart';
-import 'package:fitnessgoal/database/database_healper.dart'; // Import the database helper
-import 'package:fitnessgoal/models/habit.dart'; // Import the habit model
+import 'package:fitnessgoal/components/my_button.dart';
+
+import 'package:fitnessgoal/models/habit.dart';
 
 class AddHabitPage extends StatefulWidget {
   const AddHabitPage({Key? key}) : super(key: key);
@@ -18,14 +15,56 @@ class AddHabitPage extends StatefulWidget {
 class _AddHabitPageState extends State<AddHabitPage> {
   final habitTitle = TextEditingController();
   final titleDescription = TextEditingController();
-  late FixedExtentScrollController _controller;
   DateTime? selectedDate;
   TimeOfDay? selectedTime;
 
-  @override
-  void initState() {
-    super.initState();
-    _controller = FixedExtentScrollController();
+  final DatabaseHelper _databaseHelper = DatabaseHelper();
+
+  Future<void> _saveHabit() async {
+    if (habitTitle.text.isNotEmpty &&
+        titleDescription.text.isNotEmpty &&
+        selectedDate != null &&
+        selectedTime != null) {
+      final habit = Habit(
+        title: habitTitle.text,
+        description: titleDescription.text,
+        date: selectedDate!.toString(),
+        time: selectedTime!.format(context),
+      );
+
+      int habitId = await _databaseHelper.insertHabit(habit);
+      if (habitId != -1) {
+        Navigator.of(context).pop(); // Navigate back after saving habit
+      } else {
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text('Error'),
+            content: Text('Failed to save habit. Please try again.'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: Text('OK'),
+              ),
+            ],
+          ),
+        );
+      }
+    } else {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text('Error'),
+          content: Text('Please fill in all fields.'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text('OK'),
+            ),
+          ],
+        ),
+      );
+    }
   }
 
   Future<void> _selectDate(BuildContext context) async {
@@ -56,176 +95,79 @@ class _AddHabitPageState extends State<AddHabitPage> {
     }
   }
 
-  Future<void> _saveHabit() async {
-    if (habitTitle.text.isNotEmpty &&
-        titleDescription.text.isNotEmpty &&
-        selectedDate != null &&
-        selectedTime != null) {
-      final habit = Habit(
-        title: habitTitle.text,
-        description: titleDescription.text,
-        date: selectedDate!.toString().substring(0, 10),
-        time: selectedTime!.format(context),
-      );
-      await DatabaseHelper().insertHabit(habit);
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => HomePage(
-            userName: 'Text',
-            onProfile: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ProfilePage(),
-                ),
-              );
-            },
-            onSignOut: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => LoginOrReg(),
-                ),
-              );
-            },
-          ),
-        ),
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[300],
-      body: Container(
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
+      appBar: AppBar(
+        title: Text('Add Habit'),
+      ),
+      body: Padding(
+        padding: EdgeInsets.all(20.0),
         child: SingleChildScrollView(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 25),
-              IconButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (builder) => HomePage(
-                        userName: 'Text',
-                        onProfile: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ProfilePage(),
-                            ),
-                          );
-                        },
-                        onSignOut: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => LoginOrReg(),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  );
-                },
-                icon: Icon(Icons.arrow_back),
+              SizedBox(height: 30),
+              Icon(
+                Icons.description_sharp,
+                size: 100,
               ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 25, vertical: 5),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Create A Habit",
+              MyTextField(
+                controller: habitTitle,
+                lableText: 'Goal Title',
+                obscureText: false,
+                prefixIcon: Icons.title,
+              ),
+              MyTextField(
+                controller: titleDescription,
+                obscureText: false,
+                prefixIcon: Icons.description,
+                lableText: 'Description',
+              ),
+              SizedBox(height: 20.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color.fromARGB(255, 13, 71, 161),
+                    ),
+                    onPressed: () => _selectDate(context),
+                    child: Text(
+                      selectedDate == null
+                          ? 'Select Date'
+                          : 'Date: ${selectedDate!.toString().substring(0, 10)}',
                       style: TextStyle(
-                        fontSize: 33,
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        color: Color.fromARGB(255, 255, 255, 255),
                       ),
                     ),
-                    SizedBox(height: 50),
-                    label("Habit Title"),
-                    SizedBox(height: 20),
-                    Center(
-                      child: MyTextField(
-                        controller: habitTitle,
-                        obscureText: false,
-                        prefixIcon: Icons.title,
-                        lableText: 'Habit Title',
+                  ),
+                  SizedBox(width: 10),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color.fromARGB(255, 13, 71, 161),
+                    ),
+                    onPressed: () => _selectTime(context),
+                    child: Text(
+                      selectedTime == null
+                          ? 'Select Time'
+                          : 'Time: ${selectedTime!.format(context)}',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Color.fromARGB(255, 255, 255, 255),
                       ),
                     ),
-                    SizedBox(height: 20),
-                    MyTextField(
-                      controller: titleDescription,
-                      obscureText: false,
-                      prefixIcon: Icons.description,
-                      lableText: 'Habit Description',
-                    ),
-                    SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Color.fromARGB(255, 13, 71, 161),
-                          ),
-                          onPressed: () => _selectDate(context),
-                          child: Text(
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Color.fromARGB(255, 255, 255, 255),
-                            ),
-                            selectedDate == null
-                                ? 'Select Date'
-                                : 'Date: ${selectedDate!.toString().substring(0, 10)}',
-                          ),
-                        ),
-                        SizedBox(width: 10),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Color.fromARGB(255, 13, 71, 161),
-                          ),
-                          onPressed: () => _selectTime(context),
-                          child: Text(
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Color.fromARGB(255, 255, 255, 255),
-                              ),
-                              selectedTime == null
-                                  ? 'Select Time'
-                                  : 'Time: ${selectedTime!.format(context)}'),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 20),
-                    MyButton(
-                      onTap: _saveHabit,
-                      text: ('Save Habit'),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 20),
+              MyButton(
+                onTap: _saveHabit,
+                text: 'Save Habit',
               ),
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  Widget label(String label) {
-    return Text(
-      label,
-      style: TextStyle(
-        fontSize: 22,
-        color: Colors.black,
-        fontWeight: FontWeight.bold,
       ),
     );
   }

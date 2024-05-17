@@ -599,11 +599,7 @@ packages:
       sha256: a597f72a664dbd293f3bfc51f9ba69816f84dcd403cdac7066cb3f6003f3ab47
       url: "https://pub.dev"
     source: hosted
-<<<<<<< HEAD
     version: "2.0.1"
-=======
-    version: "3.0.1"
->>>>>>> 6a70cfab6ee11767c33d1181ef3d04cf1d0cb25f
   matcher:
     dependency: transitive
     description:
