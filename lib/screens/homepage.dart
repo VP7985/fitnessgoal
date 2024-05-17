@@ -2,7 +2,6 @@ import 'package:fitnessgoal/database/database_healper.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitnessgoal/components/drawer.dart';
-
 import 'package:fitnessgoal/models/habit.dart';
 import 'package:fitnessgoal/screens/add_habit.dart';
 import 'package:fitnessgoal/screens/delete_habit.dart';
