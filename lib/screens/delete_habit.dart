@@ -26,11 +26,11 @@ class DeleteHabitPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Are you sure you want to delete this habit?'),
+            Text('Are you sure you want to delete this Goal?'),
             SizedBox(height: 20.0),
             ElevatedButton(
               onPressed: () => _deleteHabit(context),
-              child: Text('Delete Habit'),
+              child: Text('Delete Goal'),
             ),
           ],
         ),
