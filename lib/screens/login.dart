@@ -22,13 +22,47 @@ class _LoginPageState extends State<LoginPage> {
 
   bool _isLoading = false;
 
+<<<<<<< Updated upstream
   Future<void> googleLogin() async {
+=======
+  Future<void> _signInUser() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      if (emailController.text.isNotEmpty &&
+          passwordController.text.isNotEmpty) {
+        await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: emailController.text,
+          password: passwordController.text,
+        );
+        _navigateToHomePage();
+      } else {
+        _showErrorMessage("Please enter valid email and password.");
+      }
+    } catch (e) {
+      _showErrorMessage("Login failed. Please try again.");
+      print("Error: $e");
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
+  Future<void> _googleLogin() async {
+>>>>>>> Stashed changes
     setState(() {
       _isLoading = true;
     });
 
     try {
       GoogleSignIn _googleSignIn = GoogleSignIn();
+      
+      // Sign out from the Google account if already signed in
+      await _googleSignIn.signOut();
+      
       var result = await _googleSignIn.signIn();
       if (result == null) {
         // User canceled sign-in
@@ -62,7 +96,12 @@ class _LoginPageState extends State<LoginPage> {
       );
     } catch (error) {
       print("Error during Google sign-in: $error");
+<<<<<<< Updated upstream
       // Handle error if necessary
+=======
+      _showErrorMessage("Google sign-in failed. Please try again.");
+    } finally {
+>>>>>>> Stashed changes
       setState(() {
         _isLoading = false;
       });
@@ -146,7 +185,7 @@ class _LoginPageState extends State<LoginPage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SizedBox(height: 30),
+                    SizedBox(height: 100),
                     Icon(
                       Icons.account_circle,
                       size: 100,
