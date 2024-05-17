@@ -1,28 +1,56 @@
-import 'package:fitnessgoal/screens/homepage.dart';
 import 'package:fitnessgoal/screens/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:fitnessgoal/screens/homepage.dart';
 import 'package:fitnessgoal/screens/forgetpassword.dart';
 import 'package:fitnessgoal/components/my_button.dart';
 import 'package:fitnessgoal/components/my_textfield.dart';
+import 'package:fitnessgoal/components/google_signin_button.dart';
 
 class LoginPage extends StatefulWidget {
-  final Function()? onTap;
-
   const LoginPage({Key? key, required this.onTap}) : super(key: key);
+
+  final Function() onTap;
 
   @override
   _LoginPageState createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   bool _isLoading = false;
 
-  Future<void> googleLogin() async {
+  Future<void> _signInUser() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      if (emailController.text.isNotEmpty &&
+          passwordController.text.isNotEmpty) {
+        await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: emailController.text,
+          password: passwordController.text,
+        );
+
+        _navigateToHomePage();
+      } else {
+        _showErrorMessage("Please enter valid email and password.");
+      }
+    } catch (e) {
+      _showErrorMessage("Login failed. Please try again.");
+      print("Error: $e");
+    }
+
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
+  Future<void> _googleLogin() async {
     setState(() {
       _isLoading = true;
     });
@@ -31,7 +59,6 @@ class _LoginPageState extends State<LoginPage> {
       GoogleSignIn _googleSignIn = GoogleSignIn();
       var result = await _googleSignIn.signIn();
       if (result == null) {
-        // User canceled sign-in
         setState(() {
           _isLoading = false;
         });
@@ -46,72 +73,28 @@ class _LoginPageState extends State<LoginPage> {
 
       await FirebaseAuth.instance.signInWithCredential(credential);
 
-      // Navigate to the homepage after successful login
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-            builder: (context) => HomePage(
-                  userName: '',
-                  onProfile: () {
-                    ProfilePage();
-                  },
-                  onSignOut: () {
-                    LoginPage(onTap: () {});
-                  },
-                )),
-      );
+      _navigateToHomePage();
     } catch (error) {
       print("Error during Google sign-in: $error");
-      // Handle error if necessary
       setState(() {
         _isLoading = false;
       });
     }
   }
 
-  Future<void> logout() async {
-    try {
-      await GoogleSignIn().disconnect();
-      await FirebaseAuth.instance.signOut();
-    } catch (error) {
-      print("Error during logout: $error");
-      // Handle error if necessary
-    }
-  }
-
-  void forgetPassword(BuildContext context) {
-    Navigator.push(
+  void _navigateToHomePage() {
+    Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => ForgotPasswordPage(),
+        builder: (context) => HomePage(
+          onSignOut: () {},
+          userName: '$User',
+          onProfile: () {
+            ProfilePage();
+          },
+        ),
       ),
     );
-  }
-
-  Future<void> signInUser() async {
-    setState(() {
-      _isLoading = true;
-    });
-
-    try {
-      if (emailController.text.isNotEmpty &&
-          passwordController.text.isNotEmpty) {
-        await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: emailController.text,
-          password: passwordController.text,
-        );
-        // Sign-in successful, handle navigation or further actions here
-      } else {
-        _showErrorMessage("Please enter valid email and password.");
-      }
-    } catch (e) {
-      _showErrorMessage("Sign-in failed. Please try again.");
-      print("Error: $e");
-    }
-
-    setState(() {
-      _isLoading = false;
-    });
   }
 
   void _showErrorMessage(String message) {
@@ -173,79 +156,43 @@ class _LoginPageState extends State<LoginPage> {
                       prefixIcon: Icons.lock,
                       lableText: 'Password',
                     ),
-                    SizedBox(height: 10),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          GestureDetector(
-                            onTap: () => forgetPassword(context),
-                            child: Text(
-                              'Forget password',
-                              style: TextStyle(
-                                color: Colors.blue,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
                     SizedBox(height: 25),
-                    MyButton(
-                      onTap: signInUser,
-                      text: "Sign In",
+                    _isLoading
+                        ? SizedBox(
+                            height: 50,
+                            child: ElevatedButton(
+                              onPressed: null,
+                              child: Text("Signing In..."),
+                            ),
+                          )
+                        : MyButton(
+                            onTap: _signInUser,
+                            text: 'Sign In',
+                          ),
+                    SizedBox(height: 20),
+                    MyGoogleButton(
+                      onPressed: _googleLogin,
+                      text: 'Sign In with Google',
                     ),
-                    SizedBox(height: 40),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Divider(
-                              thickness: 0.5,
-                              color: Colors.grey[400],
-                            ),
-                          ),
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 10.0),
-                            child: Text(
-                              'Or continue with',
-                              style: TextStyle(color: Colors.grey[700]),
-                            ),
-                          ),
-                          Expanded(
-                            child: Divider(
-                              thickness: 0.5,
-                              color: Colors.grey[400],
-                            ),
-                          ),
-                        ],
+                    SizedBox(height: 20),
+                    GestureDetector(
+                      onTap: () {
+                        _forgetPassword(context);
+                      },
+                      child: Text(
+                        'Forget password',
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
-                    SizedBox(height: 30),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          height: 50,
-                          child: ElevatedButton(
-                            onPressed: _isLoading ? null : googleLogin,
-                            child: _isLoading
-                                ? CircularProgressIndicator()
-                                : Text("Sign In With Google"),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 30),
+                    SizedBox(height: 20),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'Create an account',
+                          'Don\'t have an account?',
                           style: TextStyle(color: Colors.grey[700]),
                         ),
                         GestureDetector(
@@ -273,6 +220,15 @@ class _LoginPageState extends State<LoginPage> {
               ),
           ],
         ),
+      ),
+    );
+  }
+
+  void _forgetPassword(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ForgotPasswordPage(),
       ),
     );
   }

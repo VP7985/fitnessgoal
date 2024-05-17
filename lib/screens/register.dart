@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fitnessgoal/screens/login.dart';
 import 'package:fitnessgoal/components/my_button.dart';
 import 'package:fitnessgoal/components/my_textfield.dart';
-import 'package:fitnessgoal/screens/login.dart';
 
 class RegisterPage extends StatefulWidget {
   final Function()? onTap;
@@ -16,27 +16,31 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmpassController = TextEditingController();
+  final TextEditingController confirmPasswordController = TextEditingController();
 
-  bool _isLoading = false; // to track if registration is in progress
+  bool _isLoading = false;
 
   Future<void> _signUp() async {
     setState(() {
-      _isLoading = true; 
+      _isLoading = true;
     });
 
     try {
-      if (passwordController.text == confirmpassController.text) {
+      if (passwordController.text == confirmPasswordController.text) {
         await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: usernameController.text,
           password: passwordController.text,
         );
 
-        // Registration successful, navigate to LoginPage
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-              builder: (context) => LoginPage(onTap: widget.onTap)),
+            builder: (context) => LoginPage(
+              onTap: () {
+                // Navigate to login screen
+              },
+            ),
+          ),
         );
       } else {
         _showErrorMessage("Passwords don't match!");
@@ -46,7 +50,7 @@ class _RegisterPageState extends State<RegisterPage> {
       print("Error: $e");
     } finally {
       setState(() {
-        _isLoading = false; // hide loading indicator
+        _isLoading = false;
       });
     }
   }
@@ -56,14 +60,14 @@ class _RegisterPageState extends State<RegisterPage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Error'),
+          title: Text('Error'),
           content: Text(message),
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.pop(context); // Close the dialog
+                Navigator.pop(context);
               },
-              child: const Text('OK'),
+              child: Text('OK'),
             ),
           ],
         );
@@ -82,12 +86,12 @@ class _RegisterPageState extends State<RegisterPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SizedBox(height: 10),
-                const Icon(
+                SizedBox(height: 10),
+                Icon(
                   Icons.account_circle,
                   size: 100,
                 ),
-                const SizedBox(height: 30),
+                SizedBox(height: 30),
                 Text(
                   'Create an account',
                   style: TextStyle(
@@ -95,60 +99,35 @@ class _RegisterPageState extends State<RegisterPage> {
                     fontSize: 16,
                   ),
                 ),
-                const SizedBox(height: 25),
+                SizedBox(height: 25),
                 MyTextField(
                   controller: usernameController,
                   obscureText: false,
                   prefixIcon: Icons.person,
                   lableText: 'Username',
                 ),
-                const SizedBox(height: 10),
+                SizedBox(height: 10),
                 MyTextField(
                   controller: passwordController,
                   obscureText: true,
                   prefixIcon: Icons.lock,
                   lableText: 'Password',
                 ),
-                const SizedBox(height: 10),
+                SizedBox(height: 10),
                 MyTextField(
-                  controller: confirmpassController,
+                  controller: confirmPasswordController,
                   obscureText: true,
                   prefixIcon: Icons.password,
-                  lableText: 'Confirm',
+                  lableText: 'Confirm Password',
                 ),
-                const SizedBox(height: 25),
+                SizedBox(height: 25),
                 _isLoading
-                    ? const CircularProgressIndicator() // Show circular progress if loading
+                    ? CircularProgressIndicator()
                     : MyButton(
                         onTap: _signUp,
                         text: 'Sign Up',
                       ),
-                const SizedBox(height: 50),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: Divider(
-                        thickness: 0.5,
-                        color: Colors.grey[400],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                      child: Text(
-                        'Or continue with',
-                        style: TextStyle(color: Colors.grey[700]),
-                      ),
-                    ),
-                    Expanded(
-                      child: Divider(
-                        thickness: 0.5,
-                        color: Colors.grey[400],
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 50),
+                SizedBox(height: 50),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -158,7 +137,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                     GestureDetector(
                       onTap: widget.onTap,
-                      child: const Text(
+                      child: Text(
                         ' Login Now',
                         style: TextStyle(
                           color: Colors.blue,

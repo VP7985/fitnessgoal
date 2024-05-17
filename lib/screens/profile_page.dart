@@ -16,7 +16,7 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   late User? _currentUser;
-  XFile? _imageFile;
+  File? _imageFile;
 
   @override
   void initState() {
@@ -30,7 +30,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
     setState(() {
       if (pickedFile != null) {
-        _imageFile = XFile(pickedFile.path);
+        _imageFile = File(pickedFile.path);
         // You can upload the _imageFile to Firebase Storage or display it directly
       }
     });
