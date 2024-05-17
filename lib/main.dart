@@ -1,7 +1,8 @@
 import 'package:fitnessgoal/auth/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:fitnessgoal/firebase_options.dart';
+import 'package:fitnessgoal/firebase_options.dart'; // Import your Firebase options
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -12,19 +13,18 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      
       debugShowCheckedModeBanner: false,
       title: 'Goalify',
       theme: ThemeData(
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: const AuthPage(),
+      home: AuthPage(),
     );
   }
 }
