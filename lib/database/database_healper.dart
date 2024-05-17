@@ -31,16 +31,16 @@ class DatabaseHelper {
     );
   }
 
-  Future<void> insertHabit(Habit habit) async {
+  Future<int> insertHabit(Habit habit) async {
     final db = await database;
-    await db.insert(
+    return await db.insert(
       'habits',
       habit.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
 
-  Future<List<Habit>> getHabits() async {
+  Future<List<Habit>> getHabits(String uid) async {
     final db = await database;
     final List<Map<String, dynamic>> maps = await db.query('habits');
     return List.generate(maps.length, (i) {
@@ -48,8 +48,8 @@ class DatabaseHelper {
         id: maps[i]['id'],
         title: maps[i]['title'],
         description: maps[i]['description'],
-        date: maps[i]['date'],
-        time: maps[i]['time'],
+        date: maps[i]['date'], // Parse date string to DateTime if needed
+        time: maps[i]['time'], // Parse time string to DateTime if needed
       );
     });
   }

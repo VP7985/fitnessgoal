@@ -9,7 +9,7 @@ import 'package:fitnessgoal/screens/edit_habit.dart';
 import 'package:fitnessgoal/screens/profile_page.dart';
 
 class HomePage extends StatefulWidget {
-  final String userName; // New parameter for user name
+  final String userName;
   final Function()? onProfile;
   final void Function()? onSignOut;
 
@@ -35,7 +35,7 @@ class _HomePageState extends State<HomePage> {
 
   void _refreshHabitList() {
     setState(() {
-      _habitList = DatabaseHelper().getHabits();
+      _habitList = DatabaseHelper().getHabits(FirebaseAuth.instance.currentUser!.uid);
     });
   }
 
@@ -47,16 +47,26 @@ class _HomePageState extends State<HomePage> {
   }
 
   void goToProfilePage() {
-    Navigator.pop(context);
-    if (widget.onProfile != null) {
-      widget.onProfile!();
-    }
+    Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage()));
   }
 
   void _handleHabitTap(Habit habit) {
-    // Implement your desired behavior when tapping a habit item
     print('Tapped on habit: ${habit.title}');
-    // Example: Navigate to a detail screen or perform other actions
+    // Implement your desired behavior when tapping a habit item
+  }
+
+  Color _getProgressBarColor(DateTime dueDate) {
+    final currentDate = DateTime.now();
+    if (currentDate.isAfter(dueDate)) {
+      // Past-due
+      return Colors.red;
+    } else if (currentDate.isBefore(dueDate)) {
+      // Upcoming
+      return Colors.blue;
+    } else {
+      // Due today (considered completed if not past-due)
+      return Colors.green;
+    }
   }
 
   @override
@@ -79,7 +89,6 @@ class _HomePageState extends State<HomePage> {
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return Center(child: Text('No habits found.'));
           } else {
-            // Sort habits by title in ascending order
             snapshot.data!.sort((a, b) => a.title.compareTo(b.title));
             return RefreshIndicator(
               onRefresh: () async {
@@ -89,6 +98,12 @@ class _HomePageState extends State<HomePage> {
                 itemCount: snapshot.data!.length,
                 itemBuilder: (context, index) {
                   final habit = snapshot.data![index];
+                  final currentDate = DateTime.now();
+                  final dueDate = DateTime.parse(habit.date);
+                  final totalDuration = dueDate.difference(currentDate).inSeconds;
+                  final progress = (totalDuration - dueDate.difference(currentDate).inSeconds) / totalDuration;
+                  final progressBarColor = _getProgressBarColor(dueDate);
+
                   return ListTile(
                     leading:
                         Icon(Icons.check_circle_outline, color: Colors.green),
@@ -96,8 +111,18 @@ class _HomePageState extends State<HomePage> {
                       habit.title,
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    subtitle: Text(
-                      '${habit.description}\nDate: ${habit.date}\nTime: ${habit.time}',
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('${habit.description}'),
+                        Text('Date: ${habit.date}'),
+                        Text('Time: ${habit.time}'),
+                        LinearProgressIndicator(
+                          value: progress.clamp(0.0, 1.0),
+                          backgroundColor: Colors.grey[300],
+                          valueColor: AlwaysStoppedAnimation<Color>(progressBarColor),
+                        ),
+                      ],
                     ),
                     trailing: PopupMenuButton(
                       itemBuilder: (context) => [
@@ -118,19 +143,19 @@ class _HomePageState extends State<HomePage> {
                               builder: (context) => EditHabitPage(habit: habit),
                             ),
                           );
-                          _refreshHabitList(); // Refresh after edit
+                          _refreshHabitList();
                         } else if (value == 'delete') {
                           showDialog(
                             context: context,
                             builder: (context) => DeleteHabitPage(habit: habit),
                           ).then((_) {
-                            _refreshHabitList(); // Refresh after delete
+                            _refreshHabitList();
                           });
                         }
                       },
                     ),
                     onTap: () {
-                      _handleHabitTap(habit); // Handle tap on habit item
+                      _handleHabitTap(habit);
                     },
                   );
                 },
@@ -146,7 +171,7 @@ class _HomePageState extends State<HomePage> {
             context,
             MaterialPageRoute(builder: (context) => AddHabitPage()),
           );
-          _refreshHabitList(); // Refresh after adding new habit
+          _refreshHabitList();
         },
         child: Icon(Icons.add),
       ),
