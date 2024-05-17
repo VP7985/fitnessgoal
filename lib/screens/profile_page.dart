@@ -51,7 +51,7 @@ class _ProfilePageState extends State<ProfilePage> {
               child: CircleAvatar(
                 radius: 72,
                 backgroundImage: _imageFile != null
-                    ? FileImage(_imageFile!)
+                    ? FileImage(_imageFile! as File)
                     : _currentUser?.photoURL != null
                         ? NetworkImage(_currentUser!.photoURL!)
                         : AssetImage('assets/default_profile_image.png')

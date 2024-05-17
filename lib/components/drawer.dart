@@ -13,11 +13,7 @@ class DrawerPage extends StatelessWidget {
     final User? user = FirebaseAuth.instance.currentUser;
 
     return Drawer(
-<<<<<<< Updated upstream
-      backgroundColor: Colors.blue,
-=======
       backgroundColor: Colors.grey[900], // Set the background color here
->>>>>>> Stashed changes
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -38,11 +34,7 @@ class DrawerPage extends StatelessWidget {
                       : AssetImage('assets/default_profile_image.png') as ImageProvider,
                 ),
                 decoration: BoxDecoration(
-<<<<<<< Updated upstream
-                  color: Colors.blue,
-=======
                   color: Colors.grey[900], // Match the background color
->>>>>>> Stashed changes
                 ),
               ),
               MyList(
@@ -55,14 +47,6 @@ class DrawerPage extends StatelessWidget {
                 text: 'PROFILE',
                 onTap: onProfile,
               ),
-<<<<<<< Updated upstream
-              MyList(
-                icon: Icons.macro_off,
-                text: 'Habit ',
-                onTap: onProfile,
-              ),
-=======
->>>>>>> Stashed changes
             ],
           ),
           Padding(

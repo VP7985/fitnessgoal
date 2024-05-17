@@ -22,9 +22,6 @@ class _LoginPageState extends State<LoginPage> {
 
   bool _isLoading = false;
 
-<<<<<<< Updated upstream
-  Future<void> googleLogin() async {
-=======
   Future<void> _signInUser() async {
     setState(() {
       _isLoading = true;
@@ -52,7 +49,6 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<void> _googleLogin() async {
->>>>>>> Stashed changes
     setState(() {
       _isLoading = true;
     });
@@ -96,12 +92,8 @@ class _LoginPageState extends State<LoginPage> {
       );
     } catch (error) {
       print("Error during Google sign-in: $error");
-<<<<<<< Updated upstream
-      // Handle error if necessary
-=======
       _showErrorMessage("Google sign-in failed. Please try again.");
     } finally {
->>>>>>> Stashed changes
       setState(() {
         _isLoading = false;
       });
