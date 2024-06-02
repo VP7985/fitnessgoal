@@ -1,8 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitnessgoal/screens/login.dart';
 import 'package:fitnessgoal/components/my_button.dart';
 import 'package:fitnessgoal/components/my_textfield.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class RegisterPage extends StatefulWidget {
   final Function()? onTap;
@@ -17,8 +21,44 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController = TextEditingController();
+  File? _image;
+  final picker = ImagePicker();
 
   bool _isLoading = false;
+
+  Future<String?> _uploadImage() async {
+    if (_image != null) {
+      try {
+        String userId = FirebaseAuth.instance.currentUser!.uid;
+        String fileName = 'profile_$userId.jpg';
+
+        // Upload image to Firebase Storage
+        TaskSnapshot snapshot = await FirebaseStorage.instance
+            .ref()
+            .child('profile_images')
+            .child(fileName)
+            .putFile(_image!);
+
+        // Get download URL
+        String downloadURL = await snapshot.ref.getDownloadURL();
+        return downloadURL;
+      } catch (e) {
+        print('Error uploading image: $e');
+        return null;
+      }
+    }
+    return null;
+  }
+
+  Future<void> _getImage() async {
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      if (pickedFile != null) {
+        _image = File(pickedFile.path);
+      }
+    });
+  }
 
   Future<void> _signUp() async {
     setState(() {
@@ -27,10 +67,19 @@ class _RegisterPageState extends State<RegisterPage> {
 
     try {
       if (passwordController.text == confirmPasswordController.text) {
+        // Upload image to storage and get URL
+        String? imageURL = await _uploadImage();
+
+        // Create user with email and password
         await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: usernameController.text,
           password: passwordController.text,
         );
+
+        // Add profile image URL to user profile
+        if (imageURL != null) {
+          await FirebaseAuth.instance.currentUser!.updateProfile(photoURL: imageURL);
+        }
 
         Navigator.pushReplacement(
           context,
@@ -87,9 +136,22 @@ class _RegisterPageState extends State<RegisterPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(height: 10),
-                Icon(
-                  Icons.account_circle,
-                  size: 100,
+                GestureDetector(
+                  onTap: _getImage,
+                  child: CircleAvatar(
+                    radius: 50,
+                    backgroundColor: Colors.grey[400],
+                    backgroundImage: _image != null ? FileImage(_image!) : null,
+                    child: _image == null ? Icon(Icons.person, size: 50) : null,
+                  ),
+                ),
+                SizedBox(height: 10),
+                Text(
+                  'Tap to select profile image',
+                  style: TextStyle(
+                    color: Colors.grey[700],
+                    fontSize: 12,
+                  ),
                 ),
                 SizedBox(height: 30),
                 Text(

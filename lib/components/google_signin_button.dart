@@ -17,20 +17,26 @@ class MyGoogleButton extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(40),
         ),
-        width: 250,
-        height: 50,
+        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16), // Adjust padding for small size
+        margin: const EdgeInsets.symmetric(horizontal: 25),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
               'assets/google.png',
-              height: 30,
-              width: 30,
+              height: 24,
+              width: 24,
             ),
-            SizedBox(width: 20),
-            Text(text),
+            SizedBox(width: 12), // Adjust spacing for small size
+            Text(
+              text,
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+              ),
+            ),
           ],
         ),
       ),
