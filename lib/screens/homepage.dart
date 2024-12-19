@@ -5,7 +5,7 @@ import 'package:fitnessgoal/components/drawer.dart';
 import 'package:fitnessgoal/screens/profile_page.dart';
 import 'package:fitnessgoal/screens/add_goal.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:shimmer/shimmer.dart';
+
 
 class HomePage extends StatefulWidget {
   final String userName;
@@ -65,7 +65,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> _refreshGoals() async {
-    // Implement your refresh logic here
+    
   }
 
   @override
